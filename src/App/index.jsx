@@ -20,38 +20,6 @@ function App() {
     accepted: false,
   };
 
-  /** Este array tiene datos quemados para la validación dummy  */
-  // const validationArray = [
-  //   {
-  //     idType: "CC",
-  //     idNumber: "1234567890",
-  //     name: "Juan Lopez",
-  //     email: "jlopez@mail.com",
-  //     cellphone: "3223334444",
-  //   },
-  //   {
-  //     idType: "CC",
-  //     idNumber: "1022345234",
-  //     name: "Luis Perez",
-  //     email: "luisito@mail.com",
-  //     cellphone: "3214567890",
-  //   },
-  //   {
-  //     idType: "TI",
-  //     idNumber: "1023456789",
-  //     name: "Perico Palotes",
-  //     email: "periquin@mail.com",
-  //     cellphone: "3221234567",
-  //   },
-  //   {
-  //     idType: "PA",
-  //     idNumber: "ABC123456",
-  //     name: "Pablito Armería",
-  //     email: "pabloa@mail.com",
-  //     cellphone: "31234567890",
-  //   },
-  // ];
-
   /** Array con los tipos de documento que puede seleccionar el usuario */
   const opcionesDocs = [
     {
@@ -192,7 +160,9 @@ function App() {
       const [username, domain] = email.split("@");
       if (email !== "") {
         const hiddenUsername =
-          username.substring(0, 2) + "*".repeat(username.length - 4) + username.slice(-2);
+          username.substring(0, 2) +
+          "*".repeat(username.length - 4) +
+          username.slice(-2);
 
         hiddenEmail = `${hiddenUsername}@${domain}`;
       }
@@ -201,7 +171,9 @@ function App() {
     if (cellphone.length === 10) {
       if (cellphone !== "") {
         hiddenCellphone =
-          cellphone.substring(0, 3) + "*".repeat(cellphone.length - 5) + cellphone.slice(-2);
+          cellphone.substring(0, 3) +
+          "*".repeat(cellphone.length - 5) +
+          cellphone.slice(-2);
       }
     }
 

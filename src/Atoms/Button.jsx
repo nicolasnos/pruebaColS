@@ -13,17 +13,7 @@ const Button = ({
   className,
   time,
 }) => {
-  let style = {};
-
-  if (checked && !disabled) {
-    style = {
-      fill: "#E4E4E4",
-    };
-  } else {
-    style = {
-      fill: "#757575",
-    };
-  }
+  let style = { fill: "#ffffff" };
 
   const typeVariant = () => {
     switch (variant) {

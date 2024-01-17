@@ -149,7 +149,6 @@ const Form = ({
   };
 
   const handleErrorsCheck = (check, robot) => {
-    console.log("handle check", check, "recaptcha ", robot);
     if (!check) {
       setCheckError(true);
     } else setCheckError(false);
@@ -216,11 +215,9 @@ const Form = ({
     let cellphone = formData.cellphoneNum;
     let service = formData.serviceType;
     let terms = formData.accepted;
-    console.log("terminos", terms);
     let errors = handleErrorsInputs(typeId, email, service);
     let errors2 = handleErrorsCheck(terms, noRobot);
     if (errors || errors2) {
-      /* console.log("inputs ", errors, "checks ", errors2); */
       return;
     }
 

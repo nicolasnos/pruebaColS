@@ -46,30 +46,6 @@ const SelectContactType = ({
     }
   };
 
-  // const callApi = async (typeId, numId, userName, email, cellphone, service, subContactType) => {
-  //   let data = new FormData();
-  //   data.append("operation", "userConsultOTP");
-  //   data.append("token", "Contraseña123@");
-  //   data.append("useProduction", "false");
-  //   data.append("typeDocument", typeId);
-  //   data.append("numberDocument", numId);
-  //   data.append("fullUserName", userName);
-  //   data.append("emailUser", email);
-  //   data.append("phoneUser", cellphone);
-  //   data.append("serviceType", service);
-  //   data.append("otpMetod", subContactType);
-
-  //   let headers = new Headers();
-  //   headers.append("Content-Type", "multipart/form-data");
-
-  //   try {
-  //     const response = await client.postData(url, data, headers);
-  //     return response;
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -119,12 +95,21 @@ const SelectContactType = ({
         </span>
       </figure>
       <WarningIcon />
-      <Header type={3} text={"Código de seguridad"} className={"contact-type-h3"} />
+      <Header
+        type={3}
+        text={"Código de seguridad"}
+        className={"contact-type-h3"}
+      />
       <p className="select-contact-type-modal-p">
-        Selecciona el <span>número de celular</span> o <span>correo electrónico</span> donde deseas
-        recibir el código de confirmación
+        Selecciona el <span>número de celular</span> o{" "}
+        <span>correo electrónico</span> donde deseas recibir el código de
+        confirmación
       </p>
-      <form onSubmit={handleSubmit} className="colsanitas-contact-type-form" name="contact-type">
+      <form
+        onSubmit={handleSubmit}
+        className="colsanitas-contact-type-form"
+        name="contact-type"
+      >
         <div className="radius-cont">
           <Input
             type="colsanitasRadioBtn"
