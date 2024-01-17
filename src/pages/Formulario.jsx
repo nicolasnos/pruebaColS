@@ -35,6 +35,10 @@ const Formulario = ({
   showPermissionModal,
   setShowPermissionModal,
   client,
+  setResendDisabled,
+  setGoBackButton,
+  otpError,
+  setOtpError,
 }) => {
   return (
     <div>
@@ -72,6 +76,10 @@ const Formulario = ({
         showPermissionModal={showPermissionModal}
         setShowPermissionModal={setShowPermissionModal}
         client={client}
+        setResendDisabled={setResendDisabled}
+        setGoBackButton={setGoBackButton}
+        otpError={otpError}
+        setOtpError={setOtpError}
       />
     </div>
   );

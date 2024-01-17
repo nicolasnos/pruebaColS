@@ -48,7 +48,7 @@ const SelectContactType = ({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    console.log("tipo de contacto: ", subContactType);
     let operation = "userConsultOTP";
     let typeId = formData.docType;
     let numId = formData.docNum;

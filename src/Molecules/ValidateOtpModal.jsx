@@ -241,7 +241,11 @@ const ValidateOtpModal = ({
           ))}
         </div>
         {otpError ? (
-          <Paragraph linesNumber={1} className={"error-paragraph"} text={"Código incorrecto"} />
+          <Paragraph
+            linesNumber={1}
+            className={"error-paragraph"}
+            text={"Código incorrecto"}
+          />
         ) : null}
         <div className="otp-modal-footer">
           <Paragraph
@@ -254,7 +258,7 @@ const ValidateOtpModal = ({
             disabled={resendDisabled}
             value={"Volver a enviar el código"}
             onClick={handleClickResend}
-            setResendDisabled={setResendDisabled}
+            setDisabled={setResendDisabled}
           />
           <Timer seconds={seconds} />
         </div>

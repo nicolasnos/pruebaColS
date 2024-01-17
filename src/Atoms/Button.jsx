@@ -10,6 +10,7 @@ const Button = ({
   checked,
   disabled,
   setDisabled,
+  setResendDisabled,
   className,
   time,
 }) => {
