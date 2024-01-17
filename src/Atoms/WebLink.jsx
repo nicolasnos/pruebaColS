@@ -1,18 +1,11 @@
-import React from "react";
+import React, { Children } from "react";
 
-const WebLink = ({ linkString, linkText, className, target, time }) => {
-
-    var className2 = `disabled-link`;
-    
-    if (time <= 0) {
-        return (
-            <a href={linkString} className={className}>{linkText}</a>
-        );
-    }
-
-    return (
-        <a href={linkString} className={`${className} ${className2}`}>{linkText}</a>
-    );
-}
+const WebLink = ({ linkString, children, className }) => {
+  return (
+    <a href={linkString} className={`${className}`}>
+      {children}
+    </a>
+  );
+};
 
 export { WebLink };

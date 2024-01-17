@@ -4,7 +4,7 @@ import { CloseIcon } from "../Atoms/CloseIcon";
 import { WarningIcon } from "../Atoms/WarningIcon";
 import { Paragraph } from "../Atoms/Paragraph";
 import { WebLink } from "../Atoms/WebLink";
-// import Button from "../Atoms/Button";
+//import Button from "../Atoms/Button";
 import "../styles/DiffDataModal.css";
 
 const DiffDataModal = ({
@@ -20,7 +20,15 @@ const DiffDataModal = ({
     setShowDiffDataModal(false);
   };
 
-  const callApi = async (typeId, numId, userName, email, cellphone, service, subContactType) => {
+  const callApi = async (
+    typeId,
+    numId,
+    userName,
+    email,
+    cellphone,
+    service,
+    subContactType
+  ) => {
     let data = new FormData();
     data.append("operation", "userConsultOTP");
     data.append("token", "Contraseña123@");
@@ -93,11 +101,10 @@ const DiffDataModal = ({
         }
       />
       <WebLink linkString={videoCallLink} className={"video-call-link"}>
-        {/* <Button
+        {/*         <Button
           variant={"primary"}
           value={"Ingresar"}
           className={"modal-btn-send"}
-          onClick={handleClick}
         /> */}
         <span className="link-button">Ingresar</span>
       </WebLink>
