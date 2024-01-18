@@ -98,6 +98,7 @@
 }
 .otp-modal-footer-link:disabled {
   color: var(--keralty-gray700);
+  cursor: default;
 }
 
 .disabled-link {

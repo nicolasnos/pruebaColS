@@ -258,7 +258,7 @@ const ValidateOtpModal = ({
             disabled={resendDisabled}
             value={"Volver a enviar el código"}
             onClick={handleClickResend}
-            setDisabled={setResendDisabled}
+            setResendDisabled={setResendDisabled}
           />
           <Timer seconds={seconds} />
         </div>

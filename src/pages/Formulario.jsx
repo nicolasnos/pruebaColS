@@ -35,7 +35,9 @@ const Formulario = ({
   showPermissionModal,
   setShowPermissionModal,
   client,
+  resendDisabled,
   setResendDisabled,
+  goBackButton,
   setGoBackButton,
   otpError,
   setOtpError,
@@ -76,7 +78,9 @@ const Formulario = ({
         showPermissionModal={showPermissionModal}
         setShowPermissionModal={setShowPermissionModal}
         client={client}
+        resendDisabled={resendDisabled}
         setResendDisabled={setResendDisabled}
+        goBackButton={goBackButton}
         setGoBackButton={setGoBackButton}
         otpError={otpError}
         setOtpError={setOtpError}

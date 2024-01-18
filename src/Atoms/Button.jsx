@@ -2,19 +2,20 @@ import React from "react";
 import "../styles/Button.css";
 import { VideoIcon } from "../Atoms/VideoIcon";
 
-const Button = ({
-  variant,
-  value,
-  type,
-  onClick,
-  checked,
-  disabled,
-  setDisabled,
-  setResendDisabled,
-  className,
-  time,
-}) => {
-  let style = { fill: "#ffffff" };
+const Button = ({ variant, value, type, onClick, disabled, className }) => {
+  let style = {
+    fill: "#FFFFFF",
+  };
+
+  // if (checked && !disabled) {
+  //   style = {
+  //     fill: "#E4E4E4",
+  //   };
+  // } else {
+  //   style = {
+  //     fill: "#757575",
+  //   };
+  // }
 
   const typeVariant = () => {
     switch (variant) {
@@ -39,6 +40,9 @@ const Button = ({
       case "resendOtp":
         return "otp-modal-footer-link";
 
+      case "modalGoBackBtn":
+        return "secondary-button";
+
       default:
         if (className) {
           return "primary-button " + className;
@@ -48,11 +52,31 @@ const Button = ({
   };
 
   if (variant === "resendOtp") {
-    if (time === 0) {
-      setDisabled(false);
-    } else {
-      setDisabled(true);
-    }
+    return (
+      <button
+        id={value}
+        className={typeVariant()}
+        type={type ? type : "button"}
+        onClick={onClick}
+        disabled={disabled}
+      >
+        {value}
+      </button>
+    );
+  }
+
+  if (variant === "modalGoBackBtn") {
+    return (
+      <button
+        id={value}
+        className={typeVariant()}
+        type={type ? type : "button"}
+        onClick={onClick}
+        disabled={disabled}
+      >
+        {value}
+      </button>
+    );
   }
 
   if (variant === "iconButton") {
@@ -62,7 +86,7 @@ const Button = ({
         type="button"
         className={typeVariant()}
         onClick={onClick}
-        disabled={disabled}
+        // disabled={disabled}
         name="icon-btn"
       >
         {value}
