@@ -72,27 +72,106 @@ const Form = ({
   const [checkError, setCheckError] = useState(false);
   const [recaptchaError, setRecaptchaError] = useState(false);
 
+  //nunca borrar este manejador tan mk
+  const handleCheck = () => {
+    setChecked(!checked);
+    /*  setFormData((prevData) => {
+      return {
+        ...prevData,
+        accepted: !checked,
+      };
+    }); */
+  };
+
+  const handleErrorIDType = (typeId) => {
+    if (typeId === 0 || typeId === "") {
+      setDocTypeError(true);
+      // return true;
+    } else {
+      setDocTypeError(false);
+      // return false;
+    }
+  };
+
+  const handleErrorIDNum = (docNum) => {
+    if (docNum.length <= 4 || docNum === 0) {
+      setDocNumError(true);
+      return true;
+    } else {
+      setDocNumError(false);
+      return false;
+    }
+  };
+
+  const handleErrorFullName = (fullName) => {
+    if (fullName < 5) {
+      setFullNameError(true);
+      return true;
+    } else {
+      setFullNameError(false);
+      return false;
+    }
+  };
+
+  const handelErrorEmail = (email) => {
+    const emailRegex =
+      /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}.){1,125}[A-Z]{2,63}$/i;
+
+    if (!emailRegex.test(email)) {
+      setEmailError(true);
+      return true;
+    } else setEmailError(false);
+    return false;
+  };
+
+  const handlePhoneError = (phone) => {
+    if (phone.length < 9) {
+      setPhoneError(true);
+      return true;
+    } else setPhoneError(false);
+    return false;
+  };
+
+  const handleErrorService = (service) => {
+    if (service === "") {
+      setServiceTypeError(true);
+      return true;
+    } else {
+      setServiceTypeError(false);
+      return false;
+    }
+  };
+
+  const handleErrorRobot = (robot) => {
+    console.log(robot);
+    if (!robot) {
+      setRecaptchaError(true);
+      return true;
+    } else setRecaptchaError(false);
+    return false;
+  };
+
+  const handleErrorCheck = (check) => {
+    if (!check) {
+      setCheckError(true);
+      return true;
+    } else setCheckError(false);
+    return false;
+  };
+
   const handleChange = (event) => {
-    // setChecked(!checked);
     event.preventDefault();
     const { name, value } = event.target;
 
+    /* if (name === "docType") {
+      handleErrorIDType(value);
+    } else setDocTypeError(false); */
+
+    //NO LO BORRE
     if (name === "fullName" && value !== "" && !/^[A-Za-z\s]+$/.test(value)) {
       // Si el valor no cumple con la validación, no actualizamos el estado
       return;
     }
-
-    if (name === "docNum" && value.toString().length < 5) {
-      setDocNumError(true);
-    } else setDocNumError(false);
-
-    if (name === "fullName" && value.length < 4) {
-      setFullNameError(true);
-    } else setFullNameError(false);
-
-    if (name === "cellphoneNum" && value.toString().length < 10) {
-      setPhoneError(true);
-    } else setPhoneError(false);
 
     if (
       name === "cellphoneNum" &&
@@ -103,68 +182,62 @@ const Form = ({
       return;
     }
 
+    // if (name === "accepted") {
+    //   handleCheck();
+    //   handleErrorCheck(!checked);
+    //   /* setCheckError(true); */
+    //   console.log("error ", handleErrorCheck(!checked));
+    // } else setCheckError(false);
+
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
+      accepted: checked,
     }));
-  };
-  //nunca borrar este manejador tan mk
-  const handleCheck = () => {
-    setChecked(!checked);
-    setFormData((prevData) => {
-      return {
-        ...prevData,
-        accepted: !checked,
-      };
-    });
-  };
 
-  const handleErrorsInputs = (typeId, email, service) => {
-    const emailRegex =
-      /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}.){1,125}[A-Z]{2,63}$/i;
+    let error = false;
 
-    if (typeId === "") {
-      setDocTypeError(true);
-    } else setDocTypeError(false);
-
-    if (service === "") {
-      setServiceTypeError(true);
-    } else setServiceTypeError(false);
-
-    if (!emailRegex.test(email)) {
-      setEmailError(true);
-    } else setEmailError(false);
-
-    if (typeId === "" || service === "" || !emailRegex.test(email)) {
-      setDocTypeError(true);
-      setEmailError(true);
-      setServiceTypeError(true);
-      return true;
-    } else {
-      setDocTypeError(false);
-      setEmailError(false);
-      setServiceTypeError(false);
-      return false;
+    switch (name) {
+      case "docType":
+        setDocTypeError(false);
+        error = handleErrorIDType(value);
+        setDocTypeError(error);
+        break;
+      case "docNum":
+        error = handleErrorIDNum(value);
+        setDocNumError(error);
+        break;
+      case "fullName":
+        error = handleErrorFullName(value);
+        setFullNameError(error);
+        break;
+      case "userEmail":
+        error = handelErrorEmail(value);
+        setEmailError(error);
+        break;
+      case "cellphoneNum":
+        error = handlePhoneError(value);
+        setPhoneError(error);
+        break;
+      case "serviceType":
+        error = handleErrorService(value);
+        setServiceTypeError(error);
+        break;
+      case "accepted":
+        handleCheck();
+        error = handleErrorCheck(checked);
+        break;
+      default:
+        break;
     }
   };
 
-  const handleErrorsCheck = (check, robot) => {
-    if (!check) {
-      setCheckError(true);
-    } else setCheckError(false);
-
-    if (!robot) {
-      setRecaptchaError(true);
-    } else setRecaptchaError(false);
-    if (!check || !robot) {
-      setCheckError(true);
-      setRecaptchaError(true);
-      return true;
-    } else {
-      setCheckError(false);
-      setRecaptchaError(false);
-      return false;
-    }
+  const handleCheckData = (e) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      accepted: e.target.checked,
+    }));
+    handleErrorCheck(e.target.checked);
   };
 
   const callApi = async (
@@ -216,9 +289,21 @@ const Form = ({
     let cellphone = formData.cellphoneNum;
     let service = formData.serviceType;
     let terms = formData.accepted;
-    let errors = handleErrorsInputs(typeId, email, service);
+    //manejo de errores
+    let errortipoDoc = handleErrorIDType(typeId);
+    let errorNumeroDoc = handleErrorIDNum(numId);
+    let errorFullName = handleErrorFullName(userName);
+    let errorEmail = handelErrorEmail(email);
+    let errorServiceType = handleErrorService(service);
+    let errorPhone = handlePhoneError(cellphone);
+    let errorRobot = handleErrorRobot(noRobot);
+    let errorCheck = handleErrorCheck(terms);
+    /*     let errors = handleErrorsInputs(typeId, email, service);
     let errors2 = handleErrorsCheck(terms, noRobot);
     if (errors || errors2) {
+      return;
+    } */
+    if (errorCheck) {
       return;
     }
 
@@ -269,7 +354,7 @@ const Form = ({
     } else {
       setHandleClass("unChecked");
     }
-    /* console.log(formData); */
+    console.log(formData);
     // console.log("Código otp: " + otpCode);
     // console.log("Time actual en form", date);
   }, [
@@ -286,6 +371,7 @@ const Form = ({
     setShowContactModal,
     // date,
     videoCallLink,
+    noRobot,
   ]);
 
   return (
@@ -297,7 +383,11 @@ const Form = ({
       <form className="form" type="submit">
         <div className="caja">
           <Input
-            label="Tipo de documento"
+            label={
+              docTypeError
+                ? "Selecciona un Tipo de documento"
+                : "Tipo de documento"
+            }
             type="select"
             options={opcionesDocs}
             value={docType}
@@ -307,8 +397,12 @@ const Form = ({
             docTypeError={docTypeError}
           />
           <Input
-            label="Número de documento"
-            type={"number"}
+            label={
+              docNumError
+                ? "Escribe un número de documento válido"
+                : "Número de documento"
+            }
+            type={"text"}
             placeHolder="Ej: 1223456789"
             value={docNum}
             name={"docNum"}
@@ -318,7 +412,11 @@ const Form = ({
         </div>
         <div className="caja">
           <Input
-            label="Nombre Completo"
+            label={
+              fullNameError
+                ? "Por favor escribe tu nombre completo"
+                : "Nombre Completo"
+            }
             type={"text"}
             placeHolder="Ej: Juan Paz"
             value={fullName}
@@ -327,7 +425,9 @@ const Form = ({
             fullNameError={fullNameError}
           />
           <Input
-            label="Correo electrónico"
+            label={
+              emailError ? "Escribe un correo válido" : "Correo electrónico"
+            }
             type={"email"}
             placeHolder="Ej: juan@gmail.com"
             value={userEmail}
@@ -338,7 +438,11 @@ const Form = ({
         </div>
         <div className="caja">
           <Input
-            label="Número celular"
+            label={
+              phoneError
+                ? "Ingresa un número de celular válido"
+                : "Numero celular"
+            }
             type={"number"}
             placeHolder="Ej: 310222311"
             value={cellphoneNum}
@@ -347,7 +451,11 @@ const Form = ({
             phoneError={phoneError}
           />
           <Input
-            label="Tipo de servicio"
+            label={
+              serviceTypeError
+                ? "Selecciona un tipo de servicio"
+                : "Tipo de servicio"
+            }
             type={"select"}
             placeHolder="Ej: juan@gmail.com"
             options={opcionesServ}
@@ -369,7 +477,12 @@ const Form = ({
           <ReCAPTCHA
             ref={captcha}
             sitekey="6Lfdm0wpAAAAACPO3J7KJTxxV_qNo60rU5DdzMVQ"
-            onChange={() => setNoRobot(true)}
+            // onClick={() => setNoRobot(true)}
+            onChange={() => {
+              if (captcha.current.getValue()) {
+                setRecaptchaError(false);
+              } else setRecaptchaError(true);
+            }}
           />
         </div>
         {checkError ? (
@@ -387,6 +500,7 @@ const Form = ({
           <input
             type="checkbox"
             onClick={handleCheck}
+            onChange={handleCheckData}
             name={"accepted"}
             checked={checked}
           />
