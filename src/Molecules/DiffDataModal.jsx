@@ -4,7 +4,7 @@ import { CloseIcon } from "../Atoms/CloseIcon";
 import { WarningIcon } from "../Atoms/WarningIcon";
 import { Paragraph } from "../Atoms/Paragraph";
 import { WebLink } from "../Atoms/WebLink";
-//import Button from "../Atoms/Button";
+import Button from "../Atoms/Button";
 import "../styles/DiffDataModal.css";
 
 const DiffDataModal = ({
@@ -14,6 +14,7 @@ const DiffDataModal = ({
   setVideoCallLink,
   videoCallLink,
   formData,
+  setShowPermissionModal,
 }) => {
   const handleClickClose = (e) => {
     e.preventDefault();
@@ -82,6 +83,11 @@ const DiffDataModal = ({
     }
   }, [formData, setVideoCallLink]);
 
+  const changeModals = () => {
+    setShowDiffDataModal(false);
+    setShowPermissionModal(true);
+  };
+
   useEffect(() => {
     fetchData(); // Llamada a la función fetchData al montar el componente
   }, [fetchData]);
@@ -100,14 +106,12 @@ const DiffDataModal = ({
           "Los datos de correo y teléfono que ingresaste no coinciden con nuestros registros. No obstante, tu solicitud será transferida con uno de nuestros asesores."
         }
       />
-      <WebLink linkString={videoCallLink} className={"video-call-link"}>
-        {/*         <Button
-          variant={"primary"}
-          value={"Ingresar"}
-          className={"modal-btn-send"}
-        /> */}
-        <span className="link-button">Ingresar</span>
-      </WebLink>
+      <Button
+        variant={"primary"}
+        value={"Ingresar"}
+        className={"modal-btn-send"}
+        onClick={changeModals}
+      />
     </BaseModal>
   );
 };

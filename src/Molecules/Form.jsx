@@ -143,7 +143,6 @@ const Form = ({
   };
 
   const handleErrorRobot = (robot) => {
-    console.log(robot);
     if (!robot) {
       setRecaptchaError(true);
       return true;
@@ -296,7 +295,7 @@ const Form = ({
     let errorEmail = handelErrorEmail(email);
     let errorServiceType = handleErrorService(service);
     let errorPhone = handlePhoneError(cellphone);
-    let errorRobot = handleErrorRobot(noRobot);
+    let errorRobot = handleErrorRobot(captcha.current.getValue());
     let errorCheck = handleErrorCheck(terms);
     /*     let errors = handleErrorsInputs(typeId, email, service);
     let errors2 = handleErrorsCheck(terms, noRobot);
@@ -354,7 +353,8 @@ const Form = ({
     } else {
       setHandleClass("unChecked");
     }
-    console.log(formData);
+    console.log(captcha.current.getValue());
+    // console.log(formData);
     // console.log("Código otp: " + otpCode);
     // console.log("Time actual en form", date);
   }, [
@@ -371,7 +371,7 @@ const Form = ({
     setShowContactModal,
     // date,
     videoCallLink,
-    noRobot,
+    captcha,
   ]);
 
   return (
@@ -481,7 +481,8 @@ const Form = ({
             onChange={() => {
               if (captcha.current.getValue()) {
                 setRecaptchaError(false);
-              } else setRecaptchaError(true);
+              }
+              //else setRecaptchaError(true);
             }}
           />
         </div>
@@ -606,6 +607,7 @@ const Form = ({
           client={client}
           url={url}
           formData={formData}
+          setShowPermissionModal={setShowPermissionModal}
         />
       ) : null}
     </div>
