@@ -353,7 +353,7 @@ const Form = ({
     } else {
       setHandleClass("unChecked");
     }
-    console.log(captcha.current.getValue());
+    // console.log(captcha.current.getValue());
     // console.log(formData);
     // console.log("Código otp: " + otpCode);
     // console.log("Time actual en form", date);
