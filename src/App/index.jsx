@@ -23,6 +23,12 @@ function App() {
   /** Array con los tipos de documento que puede seleccionar el usuario */
   const opcionesDocs = [
     {
+      id: 0,
+      name: "Selecciona una opción",
+      value: "",
+      stringValue: "",
+    },
+    {
       id: 1,
       name: "Cédula de Ciudadania",
       value: "1",
@@ -110,6 +116,10 @@ function App() {
 
   /** Array con los tipos de servicio que puede seleccionar el usuario */
   const opcionesServ = [
+    {
+      value: "",
+      name: "Selecciona una opción",
+    },
     {
       value: 1,
       name: "Autorizaciones",

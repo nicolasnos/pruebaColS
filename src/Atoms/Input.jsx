@@ -70,7 +70,6 @@ const Input = ({
       return (
         <select name={name} id={id} onChange={onChange}>
           {label}
-          <option value="">Selecciona una opción</option>
           {options.map((option) => {
             return (
               <option key={option.value} value={option.value}>
