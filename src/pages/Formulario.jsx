@@ -41,8 +41,6 @@ const Formulario = ({
   setGoBackButton,
   otpError,
   setOtpError,
-  loader,
-  setLoader,
 }) => {
   return (
     <div>
@@ -86,8 +84,6 @@ const Formulario = ({
         setGoBackButton={setGoBackButton}
         otpError={otpError}
         setOtpError={setOtpError}
-        loader={loader}
-        setLoader={setLoader}
       />
     </div>
   );

@@ -3,6 +3,7 @@ import { BaseModal } from "../pages/BaseModal";
 import { CloseIcon } from "../Atoms/CloseIcon";
 import { WarningIcon } from "../Atoms/WarningIcon";
 import { Input } from "../Atoms/Input";
+import Button from "../Atoms/Button";
 import Header from "./Header";
 import "../styles/BaseModal.css";
 import "../styles/SelectContactType.css";
@@ -25,6 +26,8 @@ const SelectContactType = ({
   formData,
   callApi,
   setShowWSEModal,
+  modalLoader,
+  setModalLoader,
 }) => {
   const [checkedEmail, setCheckedEmail] = useState(false);
   const [checkedCellphone, setCheckedCellphone] = useState(false);
@@ -49,7 +52,6 @@ const SelectContactType = ({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("tipo de contacto: ", subContactType);
     let operation = "userConsultOTP";
     let typeId = formData.docType;
     let numId = formData.docNum;
@@ -59,7 +61,7 @@ const SelectContactType = ({
     let service = formData.serviceType;
     let contactMethod = subContactType;
     let otpForwarding = 0;
-
+    setModalLoader(true);
     const apiCall = await callApi(
       operation,
       typeId,
@@ -75,10 +77,12 @@ const SelectContactType = ({
     if (apiCall.status === 200) {
       setOtpCode(apiCall.message[0].codigoOtp);
       setVideoCallLink(apiCall.message[0].url);
+      setModalLoader(false);
       setShowValidateOtpModal(true);
       setShowContactModal(false);
     } else {
       console.log("Error al obtener el código de seguridad", apiCall);
+      setModalLoader(false);
       setShowWSEModal(true);
       setShowContactModal(false);
     }
@@ -134,7 +138,13 @@ const SelectContactType = ({
           />
         </div>
         <div className="colsanitas-btn-cont">
-          <Input type="submit" label={"Enviar"} />
+          {/* <Input type="submit" label={"Enviar"} /> */}
+          <Button
+            variant={"loaderButton"}
+            value={"Enviar"}
+            type={"submit"}
+            loaderBtn={modalLoader}
+          />
         </div>
       </form>
     </BaseModal>

@@ -11,6 +11,7 @@ const Button = ({
   disabled,
   className,
   loader,
+  loaderBtn,
 }) => {
   let style = {
     fill: "#FFFFFF",
@@ -42,6 +43,9 @@ const Button = ({
 
       case "iconButton":
         return "primary-button";
+
+      case "loaderButton":
+        return "blue-primary-btn";
 
       case "modalButton":
         return "blue-primary-btn";
@@ -100,6 +104,22 @@ const Button = ({
       >
         {value}
         {loader ? <Loader /> : <VideoIcon estilo={style} />}
+      </button>
+    );
+  }
+
+  if (variant === "loaderButton") {
+    return (
+      <button
+        id={value + "-main-btn"}
+        type="submit"
+        className={typeVariant()}
+        onClick={onClick}
+        // disabled={disabled}
+        name="loader-btn"
+      >
+        {value}
+        {loaderBtn ? <Loader /> : null}
       </button>
     );
   }

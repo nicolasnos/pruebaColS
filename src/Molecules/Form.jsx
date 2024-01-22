@@ -50,8 +50,6 @@ const Form = ({
   client,
   otpError,
   setOtpError,
-  loader,
-  setLoader,
   // date,
 }) => {
   const { docType, docNum, fullName, userEmail, cellphoneNum, serviceType } =
@@ -74,7 +72,8 @@ const Form = ({
   const [serviceTypeError, setServiceTypeError] = useState(false);
   const [checkError, setCheckError] = useState(false);
   const [recaptchaError, setRecaptchaError] = useState(false);
-
+  const [loader, setLoader] = useState(false);
+  const [modalLoader, setModalLoader] = useState(false);
   //nunca borrar este manejador tan mk
   const handleCheck = () => {
     setChecked(!checked);
@@ -89,10 +88,10 @@ const Form = ({
   const handleErrorIDType = (typeId) => {
     if (typeId === 0 || typeId === "") {
       setDocTypeError(true);
-      // return true;
+      return true;
     } else {
       setDocTypeError(false);
-      // return false;
+      return false;
     }
   };
 
@@ -316,6 +315,7 @@ const Form = ({
       errorNumeroDoc ||
       errortipoDoc
     ) {
+      setLoader(false);
       return;
     }
 
@@ -331,6 +331,7 @@ const Form = ({
     );
     // console.log("apiCall", apiCall.message[0].emailUsuario);
     if (apiCall.status === 200) {
+      setLoader(false);
       if (apiCall.message[0].estado === "HABILITADO") {
         setServUserEmail(apiCall.message[0].emailUsuario);
         setServUserCellphone(apiCall.message[0].telefonoUsuario);
@@ -339,6 +340,7 @@ const Form = ({
           apiCall.message[0].telefonoUsuario
         ) {
           // console.log("Los correos son iguales y va a mostrar el modal respectivo");
+          setLoader(false);
           setShowContactModal(true);
           // setShowValidateOtpModal(false);
         }
@@ -579,6 +581,8 @@ const Form = ({
           setDisabled={setDisabled}
           showWSEModal={showWSEModal}
           setShowWSEModal={setShowWSEModal}
+          modalLoader={modalLoader}
+          setModalLoader={setModalLoader}
         />
       ) : null}
       {showUnauthModal ? (

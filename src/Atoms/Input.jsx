@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "../styles/Input.css";
+import Loader from "./Loader";
 
 const Input = ({
   type,
@@ -22,6 +23,7 @@ const Input = ({
   emailError,
   phoneError,
   serviceTypeError,
+  loader,
 }) => {
   const [showError, setShowError] = useState(false);
 
@@ -164,7 +166,7 @@ const Input = ({
         type="submit"
         className="colsanitas-submit"
         id="colsanitas-submit"
-        value={label}
+        value={loader ? <Loader /> : label}
       />
     );
   }

@@ -56,8 +56,6 @@ const AppUI = ({
   client,
   otpError,
   setOtpError,
-  loader,
-  setLoader,
 }) => {
   return (
     <div className="container">
@@ -120,8 +118,6 @@ const AppUI = ({
             otpError={otpError}
             setOtpError={setOtpError}
             date={date}
-            loader={loader}
-            setLoader={setLoader}
           />
           <Footer />
         </div>
