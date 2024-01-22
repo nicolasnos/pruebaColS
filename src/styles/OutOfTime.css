@@ -6,7 +6,7 @@
   padding: 60px 40px 0px 40px;
   gap: 18px;
   margin-bottom: 20px;
-  height: 62.8vh;
+  min-height: 62.8vh;
 }
 
 .ot-image-cont {
