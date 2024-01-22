@@ -38,3 +38,10 @@ input:focus {
     margin: 0px 0px 12px 0px;
   }
 }
+/* controlador para los inputs*/
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px white inset !important;
+}
