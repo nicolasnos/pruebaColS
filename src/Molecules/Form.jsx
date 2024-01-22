@@ -50,6 +50,8 @@ const Form = ({
   client,
   otpError,
   setOtpError,
+  loader,
+  setLoader,
   // date,
 }) => {
   const { docType, docNum, fullName, userEmail, cellphoneNum, serviceType } =
@@ -95,7 +97,8 @@ const Form = ({
   };
 
   const handleErrorIDNum = (docNum) => {
-    if (docNum.length <= 4 || docNum === 0) {
+    const docRegex = /^[a-zA-Z0-9_]*$/;
+    if (docNum.length <= 4 || docNum === 0 || !docRegex.test(docNum)) {
       setDocNumError(true);
       return true;
     } else {
@@ -303,10 +306,20 @@ const Form = ({
     if (errors || errors2) {
       return;
     } */
-    if (errorCheck) {
+    if (
+      errorCheck ||
+      errorRobot ||
+      errorPhone ||
+      errorServiceType ||
+      errorEmail ||
+      errorFullName ||
+      errorNumeroDoc ||
+      errortipoDoc
+    ) {
       return;
     }
 
+    setLoader(true);
     const apiCall = await callApi(
       operation,
       typeId,
@@ -335,13 +348,18 @@ const Form = ({
           apiCall.message[0].telefonoUsuario !== cellphone
         ) {
           // console.log("Los correos son diferentes y va a mostrar el modal respectivo");
+          setLoader(false);
           setShowDiffDataModal(true);
           setShowContactModal(false);
         }
       } else if (apiCall.message[0].estado === "NO HABILITADO") {
+        setLoader(false);
         setShowUnauthModal(true);
       }
-    } else setShowWSEModal(true);
+    } else {
+      setLoader(false);
+      setShowWSEModal(true);
+    }
   };
 
   // const hiddenData = hideData(formData.userEmail, formData.cellphoneNum);
@@ -381,7 +399,7 @@ const Form = ({
         <Header />
         <AttentionSchedule wvType="schedule" />
       </div>
-      <form className="form" autoComplete="off" type="submit">
+      <form className="form" type="submit">
         <div className="caja">
           <Input
             label={
@@ -534,6 +552,7 @@ const Form = ({
             value={"Ingresar"}
             onClick={validateData}
             type={"button"}
+            loader={loader}
           />
         </div>
       </form>
@@ -615,7 +634,7 @@ const Form = ({
           setShowPermissionModal={setShowPermissionModal}
         />
       ) : null}
-      {showWSEModal ? <WSErrorModal setShowModal={setShowModal} /> : null}
+      {showWSEModal ? <WSErrorModal setShowModal={setShowWSEModal} /> : null}
     </div>
   );
 };

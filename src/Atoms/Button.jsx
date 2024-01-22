@@ -1,8 +1,17 @@
 import React from "react";
 import "../styles/Button.css";
 import { VideoIcon } from "../Atoms/VideoIcon";
+import Loader from "../Atoms/Loader";
 
-const Button = ({ variant, value, type, onClick, disabled, className }) => {
+const Button = ({
+  variant,
+  value,
+  type,
+  onClick,
+  disabled,
+  className,
+  loader,
+}) => {
   let style = {
     fill: "#FFFFFF",
   };
@@ -90,7 +99,7 @@ const Button = ({ variant, value, type, onClick, disabled, className }) => {
         name="icon-btn"
       >
         {value}
-        <VideoIcon estilo={style} />
+        {loader ? <Loader /> : <VideoIcon estilo={style} />}
       </button>
     );
   }

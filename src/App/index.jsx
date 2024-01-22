@@ -157,7 +157,8 @@ function App() {
   const [showPermissionModal, setShowPermissionModal] = useState(false);
   // Errores de inputs
   const [otpError, setOtpError] = useState(false);
-
+  // Loader
+  const [loader, setLoader] = useState(false);
   /** Se definen las funciones básicas */
 
   /** Esta función se utilizará para reemplazar algunos carácteres del email y el celular del usuario cuando
@@ -248,6 +249,8 @@ function App() {
       client={client}
       otpError={otpError}
       setOtpError={setOtpError}
+      loader={loader}
+      setLoader={setLoader}
     />
   );
 }
