@@ -63,6 +63,7 @@ const Input = ({
           onChange={onChange}
           className={className}
           required
+          autoComplete="off"
         />
       );
     }
@@ -102,6 +103,7 @@ const Input = ({
           className={className}
           pattern="/^[0-9]*$/"
           maxLength={10}
+          autoComplete="off"
         />
       );
     }

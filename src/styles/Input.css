@@ -29,6 +29,7 @@ input:focus {
   transition: 500ms;
   border: 1px solid var(--keralty-main-blue);
   outline: none;
+  background-color: transparent;
 }
 /*estilos para dispositivo mobile*/
 @media (max-width: 450px) {

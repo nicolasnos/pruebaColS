@@ -48,3 +48,13 @@ input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
+
+/* Para navegadores basados en Chromium (Chrome, Edge, etc.) */
+input:-webkit-autofill {
+  background-color: transparent !important;
+}
+
+/* Para navegadores basados en Firefox */
+input:-moz-autofill {
+  background-color: transparent !important;
+}
