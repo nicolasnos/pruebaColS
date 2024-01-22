@@ -5,6 +5,7 @@ import { WarningIcon } from "../Atoms/WarningIcon";
 import Header from "../Molecules/Header";
 import { Paragraph } from "../Atoms/Paragraph";
 import { Input } from "../Atoms/Input";
+import { OtpInput } from "../Atoms/OtpInput";
 import { Timer } from "../Atoms/Timer";
 import Button from "../Atoms/Button";
 import { CloseIcon } from "../Atoms/CloseIcon";
@@ -51,66 +52,36 @@ const ValidateOtpModal = ({
     return () => clearInterval(timer);
   }, [seconds]);
 
-  const [otp, setOtp] = useState(["", "", "", "", "", ""]);
-  const [finalOtp, setFinalOtp] = useState("");
-  const [focusIndex, setFocusIndex] = useState(0);
+  const [otp, setOtp] = useState("");
+  const onChange = (value) => {
+    setOtpError(false);
+    setOtp(value);
+  };
 
   const validateOtp = () => {
     // console.log("finalOtp", finalOtp);
     // console.log("receivedOtp", receivedOtp);
-    if (parseInt(finalOtp) === receivedOtp) {
+    if (parseInt(otp) === receivedOtp) {
       handleClickClose();
       setShowPermissionModal(true);
     } else {
       setOtpError(true);
       setHandleClass("error");
-      setOtp(["", "", "", "", "", ""]);
+      setOtp("");
       // setFinalOtp("");
-      setFocusIndex(0);
       // alert("El código de seguridad es incorrecto. Por favor, inténtelo de nuevo.");
     }
   };
 
-  const handleChange = (index) => (event) => {
-    const value = event.target.value;
-    // setHandleClass("success");
-    const newOtp = [...otp];
-    newOtp[index] = value;
-    setOtp(newOtp);
-    setFinalOtp(newOtp.join(""));
-
-    if (value.length > 0 && index < newOtp.length - 1) {
-      setFocusIndex(index + 1);
-    }
-  };
-
-  const handleBackspace = (index) => (event) => {
-    if (event.key === "Backspace") {
-      const newOtp = [...otp];
-      newOtp[index] = "";
-      setOtp(newOtp);
-      setFinalOtp(newOtp.join(""));
-
-      if (index > 0) {
-        setFocusIndex(index - 1);
-      }
-      setHandleClass("disabled");
-    }
-  };
-
   const handleClickClose = () => {
-    setOtp(["", "", "", "", "", ""]);
-    setFinalOtp("");
-    setFocusIndex(0);
+    setOtp("");
     setSeconds(60);
     setShowValidateOtpModal(false);
     setOtpError(false);
   };
 
   const handleClickBack = () => {
-    setOtp(["", "", "", "", "", ""]);
-    setFinalOtp("");
-    setFocusIndex(0);
+    setOtp("");
     setSeconds(60);
     setShowValidateOtpModal(false);
     setShowContactModal(true);
@@ -151,8 +122,6 @@ const ValidateOtpModal = ({
       console.log("Error al obtener el código de seguridad", apiCall);
     }
 
-    // setOtp(["", "", "", "", "", ""]);
-    setFocusIndex(0);
     setSeconds(60);
   };
 
@@ -165,24 +134,12 @@ const ValidateOtpModal = ({
   }
 
   useEffect(() => {
-    if (focusIndex >= 0 && focusIndex < otp.length) {
-      // Enfocar la entrada correspondiente
-      // Aquí podrías usar useRef o alguna otra lógica para manejar el enfoque
-      // console.log(`Enfocar entrada ${focusIndex}`);
-
-      const input = document.getElementById(`input-${focusIndex}`);
-      if (input) {
-        input.focus();
-        input.select(); // Para seleccionar el texto automáticamente
-      }
-    }
-
     // console.log("Otp ingresado " + finalOtp);
-    if (finalOtp.length === 6) {
+    if (otp.length === 6) {
       setHandleClass("success");
       setDisabled(false);
-    } else if (finalOtp.length < 6) {
-      // setDisabled(true);
+    } else if (otp.length < 6) {
+      setDisabled(true);
     }
 
     if (seconds === 0) {
@@ -193,10 +150,8 @@ const ValidateOtpModal = ({
       setGoBackButton(true);
     }
   }, [
-    focusIndex,
     otp.length,
     otp,
-    finalOtp,
     setHandleClass,
     setDisabled,
     seconds,
@@ -227,19 +182,7 @@ const ValidateOtpModal = ({
         spanText={text}
       />
       <form type="submit" className="otp-form">
-        <div className="otp-input">
-          {otp.map((value, index) => (
-            <Input
-              type={"otp"}
-              key={index}
-              value={value}
-              onChange={handleChange(index)}
-              id={`input-${index}`}
-              onKeyDown={handleBackspace(index)}
-              className={handleClass}
-            />
-          ))}
-        </div>
+        <OtpInput value={otp} valueLength={6} onChange={onChange} />
         {otpError ? (
           <Paragraph
             linesNumber={1}
