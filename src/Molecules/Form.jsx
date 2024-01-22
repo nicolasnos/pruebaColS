@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Input } from "../Atoms/Input";
 import { AttentionSchedule } from "../Molecules/AttentionSchedule";
+import WSErrorModal from "../Molecules/WSErrorModal";
 // import PermissionModal from "./PermissionModal";
 import WrongUserModal from "./WrongUserModal";
 import Button from "../Atoms/Button";
@@ -55,7 +56,7 @@ const Form = ({
     formData;
 
   const captcha = useRef(null);
-  const [noRobot, setNoRobot] = useState(false);
+  const [showWSEModal, setShowWSEModal] = useState(false);
   const [servUserEmail, setServUserEmail] = useState("");
   const [servUserCellphone, setServUserCellphone] = useState("");
   const [videoCallLink, setVideoCallLink] = useState("");
@@ -340,7 +341,7 @@ const Form = ({
       } else if (apiCall.message[0].estado === "NO HABILITADO") {
         setShowUnauthModal(true);
       }
-    } else console.error("hubo error");
+    } else setShowWSEModal(true);
   };
 
   // const hiddenData = hideData(formData.userEmail, formData.cellphoneNum);
@@ -380,7 +381,7 @@ const Form = ({
         <Header />
         <AttentionSchedule wvType="schedule" />
       </div>
-      <form className="form" type="submit">
+      <form className="form" autoComplete="off" type="submit">
         <div className="caja">
           <Input
             label={
@@ -557,6 +558,8 @@ const Form = ({
           formData={formData}
           callApi={callApi}
           setDisabled={setDisabled}
+          showWSEModal={showWSEModal}
+          setShowWSEModal={setShowWSEModal}
         />
       ) : null}
       {showUnauthModal ? (
@@ -590,6 +593,8 @@ const Form = ({
           setOtpError={setOtpError}
           callApi={callApi}
           formData={formData}
+          showWSEModal={showWSEModal}
+          setShowWSEModal={setShowWSEModal}
         />
       ) : null}
       {showPermissionModal ? (
@@ -610,6 +615,7 @@ const Form = ({
           setShowPermissionModal={setShowPermissionModal}
         />
       ) : null}
+      {showWSEModal ? <WSErrorModal setShowModal={setShowModal} /> : null}
     </div>
   );
 };

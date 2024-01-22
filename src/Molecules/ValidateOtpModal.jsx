@@ -34,6 +34,7 @@ const ValidateOtpModal = ({
   setOtpError,
   callApi,
   formData,
+  setShowWSEModal,
 }) => {
   /** Se crea el estado para los segundos y se inicializa en 60 segundos. */
   const [seconds, setSeconds] = useState(60);
@@ -120,6 +121,8 @@ const ValidateOtpModal = ({
       setShowContactModal(false);
     } else {
       console.log("Error al obtener el código de seguridad", apiCall);
+      setShowWSEModal(true);
+      setShowValidateOtpModal(false);
     }
 
     setSeconds(60);

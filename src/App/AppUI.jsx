@@ -4,7 +4,7 @@ import React from "react";
 import Formulario from "../pages/Formulario";
 import { OutOfTime } from "../pages/OutOfTime";
 import Footer from "../Molecules/Footer";
-// import { Testing } from "../pages/Testing";
+//import { Testing } from "../pages/Testing";
 import logo from "../assets/images/logo.png";
 
 /** Importación imagenes */
@@ -67,63 +67,61 @@ const AppUI = ({
         alt="Personas interactuando con el computador"
         className="main-image"
       />
-      {
-        /*actualDay === 0 || No olvidar descomentar esta línea en paso a prod*/
-        (actualDay === 6 && actualHour < 8) ||
-        (actualDay === 6 && actualHour >= 14) ||
-        (actualDay !== 6 && actualHour < 8) ||
-        (actualDay !== 6 && actualHour >= 23) ||
-        //ANTES DE PASAR A PRODUCCIÓN VOLVER A 18
-        isHoliday === true ? (
-          <div className="ot-cont">
-            <OutOfTime />
-            <Footer />
-          </div>
-        ) : (
-          <div className="form-container">
-            <Formulario
-              opcionesDocs={opcionesDocs}
-              opcionesServ={opcionesServ}
-              checked={checked}
-              setChecked={setChecked}
-              disabled={disabled}
-              setDisabled={setDisabled}
-              checkDisabled={checkDisabled}
-              setCheckDisabled={setCheckDisabled}
-              showUnauthModal={showUnauthModal}
-              setShowUnauthModal={setShowUnauthModal}
-              showContactModal={showContactModal}
-              setShowContactModal={setShowContactModal}
-              showValidateOtpModal={showValidateOtpModal}
-              setShowValidateOtpModal={setShowValidateOtpModal}
-              handleClass={handleClass}
-              setHandleClass={setHandleClass}
-              formData={formData}
-              setFormData={setFormData}
-              selectedEmail={selectedEmail}
-              setSelectedEmail={setSelectedEmail}
-              selectedCellphone={selectedCellphone}
-              setSelectedCellphone={setSelectedCellphone}
-              otpCode={otpCode}
-              setOtpCode={setOtpCode}
-              hideData={hideData}
-              subContactType={subContactType}
-              setSubContactType={setSubContactType}
-              showPermissionModal={showPermissionModal}
-              setShowPermissionModal={setShowPermissionModal}
-              resendDisabled={resendDisabled}
-              setResendDisabled={setResendDisabled}
-              goBackButton={goBackButton}
-              setGoBackButton={setGoBackButton}
-              client={client}
-              otpError={otpError}
-              setOtpError={setOtpError}
-              date={date}
-            />
-            <Footer />
-          </div>
-        )
-      }
+      {actualDay === 0 /*No olvidar descomentar esta línea en paso a prod*/ ||
+      (actualDay === 6 && actualHour < 8) ||
+      (actualDay === 6 && actualHour >= 14) ||
+      (actualDay !== 6 && actualHour < 8) ||
+      (actualDay !== 6 && actualHour >= 23) ||
+      //ANTES DE PASAR A PRODUCCIÓN VOLVER A 18
+      isHoliday === true ? (
+        <div className="ot-cont">
+          <OutOfTime />
+          <Footer />
+        </div>
+      ) : (
+        <div className="form-container">
+          <Formulario
+            opcionesDocs={opcionesDocs}
+            opcionesServ={opcionesServ}
+            checked={checked}
+            setChecked={setChecked}
+            disabled={disabled}
+            setDisabled={setDisabled}
+            checkDisabled={checkDisabled}
+            setCheckDisabled={setCheckDisabled}
+            showUnauthModal={showUnauthModal}
+            setShowUnauthModal={setShowUnauthModal}
+            showContactModal={showContactModal}
+            setShowContactModal={setShowContactModal}
+            showValidateOtpModal={showValidateOtpModal}
+            setShowValidateOtpModal={setShowValidateOtpModal}
+            handleClass={handleClass}
+            setHandleClass={setHandleClass}
+            formData={formData}
+            setFormData={setFormData}
+            selectedEmail={selectedEmail}
+            setSelectedEmail={setSelectedEmail}
+            selectedCellphone={selectedCellphone}
+            setSelectedCellphone={setSelectedCellphone}
+            otpCode={otpCode}
+            setOtpCode={setOtpCode}
+            hideData={hideData}
+            subContactType={subContactType}
+            setSubContactType={setSubContactType}
+            showPermissionModal={showPermissionModal}
+            setShowPermissionModal={setShowPermissionModal}
+            resendDisabled={resendDisabled}
+            setResendDisabled={setResendDisabled}
+            goBackButton={goBackButton}
+            setGoBackButton={setGoBackButton}
+            client={client}
+            otpError={otpError}
+            setOtpError={setOtpError}
+            date={date}
+          />
+          <Footer />
+        </div>
+      )}
     </div>
   );
 };

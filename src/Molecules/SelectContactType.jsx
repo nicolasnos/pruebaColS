@@ -24,6 +24,7 @@ const SelectContactType = ({
   setVideoCallLink,
   formData,
   callApi,
+  setShowWSEModal,
 }) => {
   const [checkedEmail, setCheckedEmail] = useState(false);
   const [checkedCellphone, setCheckedCellphone] = useState(false);
@@ -78,6 +79,8 @@ const SelectContactType = ({
       setShowContactModal(false);
     } else {
       console.log("Error al obtener el código de seguridad", apiCall);
+      setShowWSEModal(true);
+      setShowContactModal(false);
     }
 
     // console.log(e.target.name);
