@@ -488,11 +488,13 @@ const Form = ({
         </div>
         {recaptchaError ? (
           <p
-            style={{ color: "#b50303", textAlign: "center", marginTop: "15px" }}
+            style={{ color: "#b50303", textAlign: "center", marginTop: "10px" }}
           >
             Es necesario que verifiques que no eres un robot
           </p>
-        ) : null}
+        ) : (
+          <div style={{ height: "20px", margin: "10px 0px 0px 0px" }}></div>
+        )}
         <div className="captchaBox">
           {/*Espacio para el captcha*/}
           <ReCAPTCHA
@@ -512,12 +514,14 @@ const Form = ({
             style={{
               color: "#b50303",
               textAlign: "center",
-              margin: "30px 0px 0px 0px",
+              margin: "10px 0px 0px 0px",
             }}
           >
             Debes aceptar el tratamiento de datos personales
           </p>
-        ) : null}
+        ) : (
+          <div style={{ height: "20px", margin: "10px 0px 0px 0px" }}></div>
+        )}
         <div className="checkInput">
           <input
             type="checkbox"
