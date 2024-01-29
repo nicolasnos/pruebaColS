@@ -128,7 +128,7 @@ const Form = ({
   };
 
   const handlePhoneError = (phone) => {
-    if (phone.length < 9) {
+    if (phone.length < 10) {
       setPhoneError(true);
       return true;
     } else setPhoneError(false);
