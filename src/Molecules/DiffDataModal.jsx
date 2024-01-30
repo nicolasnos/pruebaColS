@@ -15,6 +15,8 @@ const DiffDataModal = ({
   videoCallLink,
   formData,
   setShowPermissionModal,
+  setModalType,
+  setShowWSEModal,
 }) => {
   const handleClickClose = (e) => {
     e.preventDefault();
@@ -75,8 +77,11 @@ const DiffDataModal = ({
 
       if (apiCallResult.status === 200) {
         setVideoCallLink(apiCallResult.message[0].url);
+        setModalType("diffData");
       } else {
         console.log("Hubo un error en el servicio", apiCallResult);
+        setShowWSEModal(true);
+        setShowDiffDataModal(false);
       }
     } catch (error) {
       console.error(error);

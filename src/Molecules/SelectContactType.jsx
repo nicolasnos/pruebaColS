@@ -28,6 +28,7 @@ const SelectContactType = ({
   setShowWSEModal,
   modalLoader,
   setModalLoader,
+  setModalType,
 }) => {
   const [checkedEmail, setCheckedEmail] = useState(false);
   const [checkedCellphone, setCheckedCellphone] = useState(false);
@@ -80,6 +81,7 @@ const SelectContactType = ({
       setModalLoader(false);
       setShowValidateOtpModal(true);
       setShowContactModal(false);
+      setModalType("validateOtp");
     } else {
       console.log("Error al obtener el código de seguridad", apiCall);
       setModalLoader(false);

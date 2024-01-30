@@ -12,11 +12,16 @@ const PermissionModal = ({
   setShowPermissionModal,
   setShowContactModal,
   videoCallLink,
+  modalType,
 }) => {
   const handleGoBack = (e) => {
     e.preventDefault();
-    setShowPermissionModal(false);
-    setShowContactModal(true);
+    if (modalType === "validateOtp") {
+      setShowPermissionModal(false);
+      setShowContactModal(true);
+    } else if (modalType === "diffData") {
+      setShowPermissionModal(false);
+    }
   };
 
   return (

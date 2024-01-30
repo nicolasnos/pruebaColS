@@ -74,6 +74,7 @@ const Form = ({
   const [recaptchaError, setRecaptchaError] = useState(false);
   const [loader, setLoader] = useState(false);
   const [modalLoader, setModalLoader] = useState(false);
+  const [modalType, setModalType] = useState("");
   //nunca borrar este manejador tan mk
   const handleCheck = () => {
     setChecked(!checked);
@@ -587,6 +588,7 @@ const Form = ({
           setShowWSEModal={setShowWSEModal}
           modalLoader={modalLoader}
           setModalLoader={setModalLoader}
+          setModalType={setModalType}
         />
       ) : null}
       {showUnauthModal ? (
@@ -629,6 +631,7 @@ const Form = ({
           setShowPermissionModal={setShowPermissionModal}
           setShowContactModal={setShowContactModal}
           videoCallLink={videoCallLink}
+          modalType={modalType}
         />
       ) : null}
       {showDiffDataModal ? (
@@ -640,6 +643,8 @@ const Form = ({
           url={url}
           formData={formData}
           setShowPermissionModal={setShowPermissionModal}
+          setModalType={setModalType}
+          setShowWSEModal={setShowWSEModal}
         />
       ) : null}
       {showWSEModal ? <WSErrorModal setShowModal={setShowWSEModal} /> : null}
