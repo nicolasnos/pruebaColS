@@ -99,7 +99,12 @@ const SelectContactType = ({
   return (
     <BaseModal className={"contact-type-base-modal"}>
       <figure className="modal-close-icon">
-        <span onClick={() => setShowContactModal(false)}>
+        <span
+          onClick={() => {
+            setShowContactModal(false);
+            setModalLoader(false);
+          }}
+        >
           <CloseIcon />
         </span>
       </figure>
