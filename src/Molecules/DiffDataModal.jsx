@@ -43,6 +43,7 @@ const DiffDataModal = ({
     data.append("phoneUser", cellphone);
     data.append("serviceType", service);
     data.append("otpMetod", subContactType);
+    data.append("otpForwarding", 0);
 
     let headers = new Headers();
     headers.append("Content-Type", "multipart/form-data");
