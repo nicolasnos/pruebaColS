@@ -17,16 +17,6 @@ const Button = ({
     fill: "#FFFFFF",
   };
 
-  // if (checked && !disabled) {
-  //   style = {
-  //     fill: "#E4E4E4",
-  //   };
-  // } else {
-  //   style = {
-  //     fill: "#757575",
-  //   };
-  // }
-
   const typeVariant = () => {
     switch (variant) {
       case "primary":

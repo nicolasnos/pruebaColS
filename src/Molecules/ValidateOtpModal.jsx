@@ -4,7 +4,6 @@ import { BaseModal } from "../pages/BaseModal";
 import { WarningIcon } from "../Atoms/WarningIcon";
 import Header from "../Molecules/Header";
 import { Paragraph } from "../Atoms/Paragraph";
-import { Input } from "../Atoms/Input";
 import { OtpInput } from "../Atoms/OtpInput";
 import { Timer } from "../Atoms/Timer";
 import Button from "../Atoms/Button";
@@ -60,8 +59,6 @@ const ValidateOtpModal = ({
   };
 
   const validateOtp = () => {
-    // console.log("finalOtp", finalOtp);
-    // console.log("receivedOtp", receivedOtp);
     if (parseInt(otp) === receivedOtp) {
       handleClickClose();
       setShowPermissionModal(true);
@@ -69,8 +66,6 @@ const ValidateOtpModal = ({
       setOtpError(true);
       setHandleClass("error");
       setOtp("");
-      // setFinalOtp("");
-      // alert("El código de seguridad es incorrecto. Por favor, inténtelo de nuevo.");
     }
   };
 
@@ -90,7 +85,6 @@ const ValidateOtpModal = ({
   };
 
   const handleClickResend = async () => {
-    // setOtpCode(subContactType);
     let operation = "userConsultOTP";
     let typeId = formData.docType;
     let numId = formData.docNum;
@@ -100,8 +94,6 @@ const ValidateOtpModal = ({
     let service = formData.serviceType;
     let contactMethod = subContactType;
     let otpForwarding = 1;
-
-    // console.log("formData", formData);
 
     const apiCall = await callApi(
       operation,
@@ -137,7 +129,6 @@ const ValidateOtpModal = ({
   }
 
   useEffect(() => {
-    // console.log("Otp ingresado " + finalOtp);
     if (otp.length === 6) {
       setHandleClass("success");
       setDisabled(false);

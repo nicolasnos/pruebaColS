@@ -45,13 +45,7 @@ const Input = ({
 
   if (!label) {
     label = "Default label";
-  } /*else {
-    var name = label
-      .toLowerCase()
-      .replace(/ /g, "-")
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "");
-  }*/
+  }
 
   const handleType = (type) => {
     if (type === "text" || type === "number" || type === "email") {
@@ -107,22 +101,6 @@ const Input = ({
         />
       );
     }
-
-    // if (type === "userName") {
-    //   return (
-    //     <input
-    //       type="text"
-    //       placeholder={placeHolder}
-    //       name={name}
-    //       id={id}
-    //       value={value}
-    //       onChange={onChange}
-    //       className={className}
-    //       required
-    //       pattern="^[A-Za-z\s]+$"
-    //     />
-    //   );
-    // }
   };
 
   if (type === "otp") {

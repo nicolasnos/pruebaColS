@@ -88,13 +88,7 @@ const SelectContactType = ({
       setShowWSEModal(true);
       setShowContactModal(false);
     }
-
-    // console.log(e.target.name);
   };
-
-  useEffect(() => {
-    // console.log("dentro del useEffect", checkedEmail, checkedCellphone);
-  });
 
   return (
     <BaseModal className={"contact-type-base-modal"}>

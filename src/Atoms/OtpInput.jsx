@@ -23,8 +23,6 @@ const OtpInput = ({ value, valueLength, onChange }) => {
     return items;
   }, [value, valueLength]);
 
-  // console.log("Este es el valueItems", valueItems);
-
   const focusNextElement = (target) => {
     const nextElementSibling = target.nextElementSibling;
 

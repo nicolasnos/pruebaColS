@@ -301,11 +301,7 @@ const Form = ({
     let errorPhone = handlePhoneError(cellphone);
     let errorRobot = handleErrorRobot(captcha.current.getValue());
     let errorCheck = handleErrorCheck(terms);
-    /*     let errors = handleErrorsInputs(typeId, email, service);
-    let errors2 = handleErrorsCheck(terms, noRobot);
-    if (errors || errors2) {
-      return;
-    } */
+
     if (
       errorCheck ||
       errorRobot ||
@@ -330,7 +326,7 @@ const Form = ({
       cellphone,
       service
     );
-    // console.log("apiCall", apiCall.message[0].emailUsuario);
+
     if (apiCall.status === 200) {
       setLoader(false);
       if (apiCall.message[0].estado === "HABILITADO") {
@@ -340,17 +336,14 @@ const Form = ({
           apiCall.message[0].emailUsuario === email &&
           apiCall.message[0].telefonoUsuario
         ) {
-          // console.log("Los correos son iguales y va a mostrar el modal respectivo");
           setLoader(false);
           setShowContactModal(true);
-          // setShowValidateOtpModal(false);
         }
 
         if (
           apiCall.message[0].emailUsuario !== email ||
           apiCall.message[0].telefonoUsuario !== cellphone
         ) {
-          // console.log("Los correos son diferentes y va a mostrar el modal respectivo");
           setLoader(false);
           setShowDiffDataModal(true);
           setShowContactModal(false);
@@ -365,7 +358,6 @@ const Form = ({
     }
   };
 
-  // const hiddenData = hideData(formData.userEmail, formData.cellphoneNum);
   const hiddenData = hideData(servUserEmail, servUserCellphone);
 
   /** Manejo de datos del componente para el renderizado */
@@ -375,10 +367,6 @@ const Form = ({
     } else {
       setHandleClass("unChecked");
     }
-    // console.log(captcha.current.getValue());
-    // console.log(formData);
-    // console.log("Código otp: " + otpCode);
-    // console.log("Time actual en form", date);
   }, [
     formData,
     checked,
@@ -391,7 +379,6 @@ const Form = ({
     servUserCellphone,
     servUserEmail,
     setShowContactModal,
-    // date,
     videoCallLink,
     captcha,
   ]);
@@ -501,12 +488,10 @@ const Form = ({
           <ReCAPTCHA
             ref={captcha}
             sitekey="6Lfdm0wpAAAAACPO3J7KJTxxV_qNo60rU5DdzMVQ"
-            // onClick={() => setNoRobot(true)}
             onChange={() => {
               if (captcha.current.getValue()) {
                 setRecaptchaError(false);
               }
-              //else setRecaptchaError(true);
             }}
           />
         </div>

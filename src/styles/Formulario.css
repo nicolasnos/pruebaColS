@@ -41,7 +41,6 @@
 
 .checkInput p a {
   color: var(--keralty-secondary-blue);
-  /* font-weight: 400; */
 }
 
 .checkInput .checked {
