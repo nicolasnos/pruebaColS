@@ -21,18 +21,15 @@ const WrongUserModal = ({ setShowModal }) => {
         <Header text={"Aviso"} type={3} />
       </div>
       <Paragraph
-        text={
-          "Tus datos no coinciden con nuestros registros. Verifica e inténtalo de nuevo"
-        }
+        text={"Este es un canal de atención para usuarios de"}
         linesNumber={1}
+        span={true}
+        spanText={" Medicina Prepagada Colsanitas / Medisanitas"}
+        spanClassName={"bold"}
       />
       <div className="bodyModal">
         <Paragraph
-          text={`Te recordamos que el servicio de Asesor en Linea es exclusivo para uso exclusivo de
-          usuarios `}
-          span={true}
-          spanText={"Colsanitas/Medisanitas"}
-          spanClassName={"bold"}
+          text={`Si deseas adquirir nuestros servicios ingresa a https://www.colsanitas.com/en/planes o comunícate con nuestra línea de atención 6014871920 en Bogotá o 018000979020 a nivel nacional.`}
         />
       </div>
       <Button
