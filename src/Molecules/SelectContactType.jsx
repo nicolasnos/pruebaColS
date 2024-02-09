@@ -32,6 +32,7 @@ const SelectContactType = ({
 }) => {
   const [checkedEmail, setCheckedEmail] = useState(false);
   const [checkedCellphone, setCheckedCellphone] = useState(false);
+  const [selectError, setSelectError] = useState(false);
 
   const handleSelect = (e) => {
     let targetName = e.target;
@@ -52,6 +53,7 @@ const SelectContactType = ({
   };
 
   const handleSubmit = async (e) => {
+    console.log(e);
     e.preventDefault();
     let operation = "userConsultOTP";
     let typeId = formData.docType;
@@ -63,6 +65,11 @@ const SelectContactType = ({
     let contactMethod = subContactType;
     let otpForwarding = 0;
     setModalLoader(true);
+    if (!e.target[0].checked && !e.target[1].checked) {
+      setSelectError(true);
+      setModalLoader(false);
+      return;
+    }
     const apiCall = await callApi(
       operation,
       typeId,
@@ -74,7 +81,6 @@ const SelectContactType = ({
       contactMethod,
       otpForwarding
     );
-
     if (apiCall.status === 200) {
       setOtpCode(apiCall.message[0].codigoOtp);
       setVideoCallLink(apiCall.message[0].url);
@@ -138,6 +144,9 @@ const SelectContactType = ({
             onChange={handleSelect}
           />
         </div>
+        {selectError ? (
+          <p style={{ color: "#b50303" }}>Debes escoger una opción</p>
+        ) : null}
         <div className="colsanitas-btn-cont">
           {/* <Input type="submit" label={"Enviar"} /> */}
           <Button
