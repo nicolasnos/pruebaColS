@@ -53,7 +53,7 @@ const WrongUserModal = ({ setShowModal, modalTextType }) => {
         spanClassName={modalTextType === 0 ? "bold" : null}
       />
       <div className="bodyModal">
-        <Paragraph text={modalTextType !== 0 ? text2 : null} />
+        <Paragraph text={modalTextType === 0 ? text2 : null} />
       </div>
       <Button
         variant={"primary"}

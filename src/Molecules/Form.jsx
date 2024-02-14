@@ -355,19 +355,18 @@ const Form = ({
       ) {
         setLoader(false);
         setShowUnauthModal(true);
-        setModalTextType(1);
+        setModalTextType(0);
       } else if (
         apiCall.message[0].estado === "NO HABILITADO" &&
-        (apiCall.message[0].motivo === "sin vigencia" ||
-          apiCall.message[0].motivo === "otro plan")
+        apiCall.message[0].motivo === "otro plan"
       ) {
         setLoader(false);
         setShowUnauthModal(true);
-        setModalTextType(2);
-      } else {
+        setModalTextType(1);
+      } else if (apiCall.message[0].motivo === "sin vigencia") {
         setLoader(false);
         setShowUnauthModal(true);
-        setModalTextType(0);
+        setModalTextType(2);
       }
     } else {
       setLoader(false);
