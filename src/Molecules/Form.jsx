@@ -75,6 +75,7 @@ const Form = ({
   const [loader, setLoader] = useState(false);
   const [modalLoader, setModalLoader] = useState(false);
   const [modalType, setModalType] = useState("");
+  const [modalTextType, setModalTextType] = useState(0);
   //nunca borrar este manejador tan mk
   const handleCheck = () => {
     setChecked(!checked);
@@ -348,9 +349,25 @@ const Form = ({
           setShowDiffDataModal(true);
           setShowContactModal(false);
         }
-      } else if (apiCall.message[0].estado === "NO HABILITADO") {
+      } else if (
+        apiCall.message[0].estado === "NO HABILITADO" &&
+        apiCall.message[0].motivo === "sin contrato"
+      ) {
         setLoader(false);
         setShowUnauthModal(true);
+        setModalTextType(1);
+      } else if (
+        apiCall.message[0].estado === "NO HABILITADO" &&
+        (apiCall.message[0].motivo === "sin vigencia" ||
+          apiCall.message[0].motivo === "otro plan")
+      ) {
+        setLoader(false);
+        setShowUnauthModal(true);
+        setModalTextType(2);
+      } else {
+        setLoader(false);
+        setShowUnauthModal(true);
+        setModalTextType(0);
       }
     } else {
       setLoader(false);
@@ -577,7 +594,10 @@ const Form = ({
         />
       ) : null}
       {showUnauthModal ? (
-        <WrongUserModal setShowModal={setShowUnauthModal} />
+        <WrongUserModal
+          setShowModal={setShowUnauthModal}
+          modalTextType={modalTextType}
+        />
       ) : null}
       {showValidateOtpModal ? (
         <ValidateOtpModal
