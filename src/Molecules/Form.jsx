@@ -62,7 +62,7 @@ const Form = ({
   const [videoCallLink, setVideoCallLink] = useState("");
   const [showDiffDataModal, setShowDiffDataModal] = useState(false);
   const [url] = useState(
-    "https://sndl.cariai.com/colsanitas-videollamada/process"
+    "https://sndl.cariai.com/pre-colsanitas-videollamada/process"
   );
   const [docTypeError, setDocTypeError] = useState(false);
   const [docNumError, setDocNumError] = useState(false);
