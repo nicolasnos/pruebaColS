@@ -362,7 +362,7 @@ const Form = ({
       ) {
         setLoader(false);
         setShowUnauthModal(true);
-        setModalTextType(2);
+        setModalTextType(0);
       } else if (apiCall.message[0].motivo === "sin vigencia") {
         setLoader(false);
         setShowUnauthModal(true);
