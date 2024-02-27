@@ -362,11 +362,11 @@ const Form = ({
       ) {
         setLoader(false);
         setShowUnauthModal(true);
-        setModalTextType(1);
+        setModalTextType(2);
       } else if (apiCall.message[0].motivo === "sin vigencia") {
         setLoader(false);
         setShowUnauthModal(true);
-        setModalTextType(2);
+        setModalTextType(1);
       }
     } else {
       setLoader(false);
