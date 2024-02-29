@@ -172,7 +172,11 @@ const Form = ({
     } else setDocTypeError(false); */
 
     //NO LO BORRE
-    if (name === "fullName" && value !== "" && !/^[A-Za-z\s]+$/.test(value)) {
+    if (
+      name === "fullName" &&
+      value !== "" &&
+      !/^[A-Za-záéíóúüÁÉÍÓÚÜñÑ\s]+$/.test(value)
+    ) {
       // Si el valor no cumple con la validación, no actualizamos el estado
       return;
     }
@@ -289,7 +293,7 @@ const Form = ({
     let typeId = formData.docType;
     let numId = formData.docNum;
     let userName = formData.fullName;
-    let email = formData.userEmail;
+    let email = formData.userEmail.toLowerCase().trim();
     let cellphone = formData.cellphoneNum;
     let service = formData.serviceType;
     let terms = formData.accepted;
@@ -302,6 +306,8 @@ const Form = ({
     let errorPhone = handlePhoneError(cellphone);
     let errorRobot = handleErrorRobot(captcha.current.getValue());
     let errorCheck = handleErrorCheck(terms);
+
+    // console.log(email);
 
     if (
       errorCheck ||
