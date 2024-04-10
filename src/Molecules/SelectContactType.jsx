@@ -9,20 +9,26 @@ import Header from "./Header";
 import "../styles/BaseModal.css";
 import "../styles/SelectContactType.css";
 
-const SelectContactType = () => {
+const SelectContactType = ({
+  email,
+  valueEmail,
+  cellphone,
+  valueCellphone,
+  modalLoader,
+  setModalLoader,
+  callApi,
+  setModalType,
+}) => {
   const {
     formData,
     setShowContactModal,
     setShowValidateOtpModal,
-    setModalLoader,
-    setModalType,
     setOtpCode,
     setVideoCallLink,
     setSelectedCellphone,
     setSelectedEmail,
     subContactType,
     setSubContactType,
-    callApi,
     setShowWSEModal,
   } = React.useContext(ColsanitasVideoCallContext);
 
@@ -77,9 +83,9 @@ const SelectContactType = () => {
       contactMethod,
       otpForwarding
     );
-    if (apiCall.status === 200) {
-      setOtpCode(apiCall.message[0].id);
-      setVideoCallLink(apiCall.message[0].url);
+    if (apiCall.message === "Success") {
+      setOtpCode(apiCall.id);
+      setVideoCallLink(apiCall.url);
       setModalLoader(false);
       setShowValidateOtpModal(true);
       setShowContactModal(false);

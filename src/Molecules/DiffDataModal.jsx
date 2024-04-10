@@ -1,23 +1,22 @@
 import React, { useEffect, useCallback } from "react";
+import { ColsanitasVideoCallContext } from "../context";
 import { BaseModal } from "../pages/BaseModal";
 import { CloseIcon } from "../Atoms/CloseIcon";
 import { WarningIcon } from "../Atoms/WarningIcon";
 import { Paragraph } from "../Atoms/Paragraph";
-import { WebLink } from "../Atoms/WebLink";
 import Button from "../Atoms/Button";
 import "../styles/DiffDataModal.css";
 
-const DiffDataModal = ({
-  setShowDiffDataModal,
-  client,
-  url,
-  setVideoCallLink,
-  videoCallLink,
-  formData,
-  setShowPermissionModal,
-  setModalType,
-  setShowWSEModal,
-}) => {
+const DiffDataModal = ({ setModalType, setShowWSEModal }) => {
+  const {
+    setShowDiffDataModal,
+    client,
+    url,
+    setVideoCallLink,
+    formData,
+    setShowPermissionModal,
+  } = React.useContext(ColsanitasVideoCallContext);
+
   const handleClickClose = (e) => {
     e.preventDefault();
     setShowDiffDataModal(false);

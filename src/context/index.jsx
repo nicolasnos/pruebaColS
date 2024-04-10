@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { HolidayCalculator } from "./HolidayCalculator";
-import { Client } from "./Client";
+import { HolidayCalculator } from "../App/HolidayCalculator";
+import { Client } from "../App/Client";
 
 const ColsanitasVideoCallContext = React.createContext();
 
@@ -140,6 +140,7 @@ const ColsanitasVideoCallProvider = ({ children }) => {
 
   /** Empezamos a setear los estados */
   // const [isHoliday, setIsHoliday] = useState(false);
+  const [key] = useState("33aee550240479398ff95acf320dc455");
   const [checked, setChecked] = useState(false); // Para el check de TyC del formulario
   const [disabled, setDisabled] = useState(true); // Para el botón de "Ingresar"
   const [goBackButton, setGoBackButton] = useState(true);
@@ -294,6 +295,7 @@ const ColsanitasVideoCallProvider = ({ children }) => {
         setCheckError,
         recaptchaError,
         setRecaptchaError,
+        key,
       }}
     >
       {children}

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { ColsanitasVideoCallContext } from "../context";
 
 import { BaseModal } from "../pages/BaseModal";
 import { WarningIcon } from "../Atoms/WarningIcon";
@@ -8,36 +9,32 @@ import { OtpInput } from "../Atoms/OtpInput";
 import { Timer } from "../Atoms/Timer";
 import Button from "../Atoms/Button";
 import { CloseIcon } from "../Atoms/CloseIcon";
-import md5 from "md5";
 
 import "../styles/ValidateOtpModal.css";
 
-const ValidateOtpModal = ({
-  setShowValidateOtpModal,
-  setShowContactModal,
-  receivedOtp,
-  handleClass,
-  setHandleClass,
-  disabled,
-  setDisabled,
-  email,
-  cellphone,
-  contactType,
-  setOtpCode,
-  subContactType,
-  setShowPermissionModal,
-  resendDisabled,
-  setResendDisabled,
-  goBackButton,
-  setGoBackButton,
-  otpError,
-  setOtpError,
-  formData,
-  setShowWSEModal,
-  url,
-  client,
-  callApi,
-}) => {
+const ValidateOtpModal = ({ email, cellphone, contactType, callApi }) => {
+  const {
+    otpError,
+    setOtpError,
+    url,
+    key,
+    otpCode,
+    setShowPermissionModal,
+    setHandleClass,
+    setShowValidateOtpModal,
+    resendDisabled,
+    setResendDisabled,
+    goBackButton,
+    setGoBackButton,
+    disabled,
+    setDisabled,
+    formData,
+    subContactType,
+    setOtpCode,
+    setShowContactModal,
+    setShowWSEModal,
+  } = React.useContext(ColsanitasVideoCallContext);
+
   /** Se crea el estado para los segundos y se inicializa en 60 segundos. */
   const [seconds, setSeconds] = useState(60);
   let text = "";
@@ -64,38 +61,34 @@ const ValidateOtpModal = ({
   const valOtpApi = async (operation, otp, userOtp) => {
     let data = new FormData();
     data.append("operation", operation);
-    data.append("token", md5("Contraseña123@"));
-    data.append("useProduction", "false");
     data.append("otp", otp);
     data.append("userOtp", userOtp);
+    data.append("key", key);
 
-    let headers = new Headers();
-    headers.append("Content-Type", "multipart/form-data");
+    const requestOptions = {
+      method: "POST",
+      body: data,
+      redirect: "follow",
+    };
 
-    try {
-      const response = await client.postData(url, data, headers);
-      return response;
-    } catch (error) {
-      console.error(error);
-    }
+    const res = fetch(url, requestOptions);
+    return res;
   };
 
-  const validateOtp = () => {
+  const validateOtp = async () => {
     let operation = "validateOtp";
-    const res = valOtpApi(operation, otp, receivedOtp);
-    res
-      .then((data) => {
-        console.log("Respuesta", data);
-      })
-      .catch((error) => {
-        console.log("Error", error);
-      });
-    if (parseInt(otp) === receivedOtp) {
+    const res = await valOtpApi(operation, otpCode, otp);
+    if (res.status === 200) {
       handleClickClose();
       setShowPermissionModal(true);
-    } else {
+    } else if (res.status === 400) {
       setOtpError(true);
       setHandleClass("error");
+      setOtp("");
+    } else {
+      console.log(res.status);
+      setShowWSEModal(true);
+      setShowValidateOtpModal(false);
       setOtp("");
     }
   };
@@ -138,8 +131,8 @@ const ValidateOtpModal = ({
       otpForwarding
     );
 
-    if (apiCall.status === 200) {
-      setOtpCode(apiCall.message[0].codigoOtp);
+    if (apiCall.message === "Success") {
+      setOtpCode(apiCall.id);
       setShowValidateOtpModal(true);
       setShowContactModal(false);
     } else {

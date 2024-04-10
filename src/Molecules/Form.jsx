@@ -12,7 +12,6 @@ import { ValidateOtpModal } from "./ValidateOtpModal";
 import { DiffDataModal } from "./DiffDataModal";
 import PermissionModal from "./PermissionModal";
 import ReCAPTCHA from "react-google-recaptcha";
-import md5 from "md5";
 import "../styles/Formulario.css";
 
 const Form = () => {
@@ -56,6 +55,15 @@ const Form = () => {
     setCheckError,
     recaptchaError,
     setRecaptchaError,
+    setFormData,
+    client,
+    loader,
+    setLoader,
+    setShowContactModal,
+    setShowUnauthModal,
+    setShowPermissionModal,
+    showPermissionModal,
+    key,
   } = React.useContext(ColsanitasVideoCallContext);
 
   const { docType, docNum, fullName, userEmail, cellphoneNum, serviceType } =
@@ -250,8 +258,6 @@ const Form = () => {
   ) => {
     let data = new FormData();
     data.append("operation", operation);
-    data.append("token", md5("Contraseña123@"));
-    data.append("useProduction", "false");
     data.append("typeDocument", typeId);
     data.append("numberDocument", numId);
     data.append("fullUserName", userName);
@@ -262,6 +268,7 @@ const Form = () => {
     if (operation === "userConsultOTP") {
       data.append("otpMetod", subContactType);
       data.append("otpForwarding", otpForwarding);
+      data.append("key", key);
     }
 
     let headers = new Headers();
@@ -546,22 +553,23 @@ const Form = () => {
         </div>
       </form>
       {/* {showModal ? <PermissionModal setShowModal={setShowModal} /> : null} */}
-      {showContactModal ? <SelectContactType /> : null}
-      {showUnauthModal ? (
-        <WrongUserModal
-          setShowModal={setShowUnauthModal}
-          modalTextType={modalTextType}
+      {showContactModal ? (
+        <SelectContactType
+          email={hiddenData.hiddenEmail}
+          cellphone={hiddenData.hiddenCellphone}
+          valueEmail={formData.userEmail}
+          valueCellphone={formData.cellphoneNum}
+          modalLoader={modalLoader}
+          setModalLoader={setModalLoader}
+          callApi={callApi}
+          setModalType={setModalType}
         />
+      ) : null}
+      {showUnauthModal ? (
+        <WrongUserModal modalTextType={modalTextType} />
       ) : null}
       {showValidateOtpModal ? (
         <ValidateOtpModal
-          setShowValidateOtpModal={setShowValidateOtpModal}
-          setShowContactModal={setShowContactModal}
-          receivedOtp={otpCode}
-          handleClass={handleClass}
-          setHandleClass={setHandleClass}
-          disabled={disabled}
-          setDisabled={setDisabled}
           email={hiddenData.hiddenEmail}
           cellphone={hiddenData.hiddenCellphone}
           contactType={
@@ -569,32 +577,10 @@ const Form = () => {
               ? hiddenData.hiddenCellphone
               : hiddenData.hiddenEmail
           }
-          setOtpCode={setOtpCode}
-          subContactType={subContactType}
-          setShowPermissionModal={setShowPermissionModal}
-          resendDisabled={resendDisabled}
-          setResendDisabled={setResendDisabled}
-          goBackButton={goBackButton}
-          setGoBackButton={setGoBackButton}
-          setVideoCallLink={setVideoCallLink}
-          otpError={otpError}
-          setOtpError={setOtpError}
           callApi={callApi}
-          formData={formData}
-          showWSEModal={showWSEModal}
-          setShowWSEModal={setShowWSEModal}
-          url={url}
-          client={client}
         />
       ) : null}
-      {showPermissionModal ? (
-        <PermissionModal
-          setShowPermissionModal={setShowPermissionModal}
-          setShowContactModal={setShowContactModal}
-          videoCallLink={videoCallLink}
-          modalType={modalType}
-        />
-      ) : null}
+      {showPermissionModal ? <PermissionModal modalType={modalType} /> : null}
       {showDiffDataModal ? (
         <DiffDataModal
           setShowDiffDataModal={setShowDiffDataModal}

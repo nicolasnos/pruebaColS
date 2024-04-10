@@ -1,4 +1,5 @@
 import React from "react";
+import { ColsanitasVideoCallContext } from "../context";
 import { BaseModal } from "../pages/BaseModal";
 import Button from "../Atoms/Button";
 import { Image } from "../Atoms/Image";
@@ -8,12 +9,10 @@ import PermissionIMG from "../assets/images/Permissions.jpg";
 import exclamationCircle from "../assets/images/circle-exclamation.svg";
 import "../styles/ModalInfo.css";
 
-const PermissionModal = ({
-  setShowPermissionModal,
-  setShowContactModal,
-  videoCallLink,
-  modalType,
-}) => {
+const PermissionModal = ({ modalType }) => {
+  const { setShowPermissionModal, setShowContactModal, videoCallLink } =
+    React.useContext(ColsanitasVideoCallContext);
+
   const handleGoBack = (e) => {
     e.preventDefault();
     if (modalType === "validateOtp") {
