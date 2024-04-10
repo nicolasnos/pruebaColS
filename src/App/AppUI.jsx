@@ -1,4 +1,5 @@
 import React from "react";
+import { ColsanitasVideoCallContext } from "../context";
 
 /** Importación componentes */
 import Formulario from "../pages/Formulario";
@@ -13,50 +14,11 @@ import mainImage from "../assets/images/main-img.jpg";
 /** Importación estilos  */
 import "./App.css";
 
-const AppUI = ({
-  date,
-  initialData,
-  validationArray,
-  opcionesDocs,
-  opcionesServ,
-  checked,
-  setChecked,
-  disabled,
-  setDisabled,
-  checkDisabled,
-  setCheckDisabled,
-  showUnauthModal,
-  setShowUnauthModal,
-  showContactModal,
-  setShowContactModal,
-  showValidateOtpModal,
-  setShowValidateOtpModal,
-  handleClass,
-  setHandleClass,
-  formData,
-  setFormData,
-  selectedEmail,
-  setSelectedEmail,
-  selectedCellphone,
-  setSelectedCellphone,
-  otpCode,
-  setOtpCode,
-  hideData,
-  subContactType,
-  setSubContactType,
-  showPermissionModal,
-  setShowPermissionModal,
-  isHoliday,
-  actualDay,
-  actualHour,
-  resendDisabled,
-  setResendDisabled,
-  goBackButton,
-  setGoBackButton,
-  client,
-  otpError,
-  setOtpError,
-}) => {
+const AppUI = () => {
+  const { actualDay, actualHour, isHoliday } = React.useContext(
+    ColsanitasVideoCallContext
+  );
+
   return (
     <div className="container">
       <figure className="logo-cont">
@@ -80,45 +42,7 @@ const AppUI = ({
         </div>
       ) : (
         <div className="form-container">
-          <Formulario
-            opcionesDocs={opcionesDocs}
-            opcionesServ={opcionesServ}
-            checked={checked}
-            setChecked={setChecked}
-            disabled={disabled}
-            setDisabled={setDisabled}
-            checkDisabled={checkDisabled}
-            setCheckDisabled={setCheckDisabled}
-            showUnauthModal={showUnauthModal}
-            setShowUnauthModal={setShowUnauthModal}
-            showContactModal={showContactModal}
-            setShowContactModal={setShowContactModal}
-            showValidateOtpModal={showValidateOtpModal}
-            setShowValidateOtpModal={setShowValidateOtpModal}
-            handleClass={handleClass}
-            setHandleClass={setHandleClass}
-            formData={formData}
-            setFormData={setFormData}
-            selectedEmail={selectedEmail}
-            setSelectedEmail={setSelectedEmail}
-            selectedCellphone={selectedCellphone}
-            setSelectedCellphone={setSelectedCellphone}
-            otpCode={otpCode}
-            setOtpCode={setOtpCode}
-            hideData={hideData}
-            subContactType={subContactType}
-            setSubContactType={setSubContactType}
-            showPermissionModal={showPermissionModal}
-            setShowPermissionModal={setShowPermissionModal}
-            resendDisabled={resendDisabled}
-            setResendDisabled={setResendDisabled}
-            goBackButton={goBackButton}
-            setGoBackButton={setGoBackButton}
-            client={client}
-            otpError={otpError}
-            setOtpError={setOtpError}
-            date={date}
-          />
+          <Formulario />
           <Footer />
         </div>
       )}

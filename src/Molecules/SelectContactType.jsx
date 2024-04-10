@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { ColsanitasVideoCallContext } from "../context";
 import { BaseModal } from "../pages/BaseModal";
 import { CloseIcon } from "../Atoms/CloseIcon";
 import { WarningIcon } from "../Atoms/WarningIcon";
@@ -8,28 +9,23 @@ import Header from "./Header";
 import "../styles/BaseModal.css";
 import "../styles/SelectContactType.css";
 
-const SelectContactType = ({
-  email,
-  cellphone,
-  valueEmail,
-  valueCellphone,
-  setSelectedEmail,
-  setSelectedCellphone,
-  setShowValidateOtpModal,
-  setOtpCode,
-  setShowContactModal,
-  subContactType,
-  setSubContactType,
-  client,
-  url,
-  setVideoCallLink,
-  formData,
-  callApi,
-  setShowWSEModal,
-  modalLoader,
-  setModalLoader,
-  setModalType,
-}) => {
+const SelectContactType = () => {
+  const {
+    formData,
+    setShowContactModal,
+    setShowValidateOtpModal,
+    setModalLoader,
+    setModalType,
+    setOtpCode,
+    setVideoCallLink,
+    setSelectedCellphone,
+    setSelectedEmail,
+    subContactType,
+    setSubContactType,
+    callApi,
+    setShowWSEModal,
+  } = React.useContext(ColsanitasVideoCallContext);
+
   const [checkedEmail, setCheckedEmail] = useState(false);
   const [checkedCellphone, setCheckedCellphone] = useState(false);
   const [selectError, setSelectError] = useState(false);
@@ -82,7 +78,7 @@ const SelectContactType = ({
       otpForwarding
     );
     if (apiCall.status === 200) {
-      setOtpCode(apiCall.message[0].codigoOtp);
+      setOtpCode(apiCall.message[0].id);
       setVideoCallLink(apiCall.message[0].url);
       setModalLoader(false);
       setShowValidateOtpModal(true);

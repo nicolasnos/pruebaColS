@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { ColsanitasVideoCallContext } from "../context";
 import { Input } from "../Atoms/Input";
 import { AttentionSchedule } from "../Molecules/AttentionSchedule";
 import WSErrorModal from "../Molecules/WSErrorModal";
@@ -14,66 +15,53 @@ import ReCAPTCHA from "react-google-recaptcha";
 import md5 from "md5";
 import "../styles/Formulario.css";
 
-const Form = ({
-  opcionesDocs,
-  opcionesServ,
-  checked,
-  setChecked,
-  disabled,
-  setDisabled,
-  checkDisabled,
-  setCheckDisabled,
-  showUnauthModal,
-  setShowUnauthModal,
-  showContactModal,
-  setShowContactModal,
-  showValidateOtpModal,
-  setShowValidateOtpModal,
-  handleClass,
-  setHandleClass,
-  formData,
-  setFormData,
-  selectedEmail,
-  setSelectedEmail,
-  selectedCellphone,
-  setSelectedCellphone,
-  otpCode,
-  setOtpCode,
-  hideData,
-  subContactType,
-  setSubContactType,
-  showPermissionModal,
-  setShowPermissionModal,
-  resendDisabled,
-  setResendDisabled,
-  goBackButton,
-  setGoBackButton,
-  client,
-  otpError,
-  setOtpError,
-  // date,
-}) => {
+const Form = () => {
+  const {
+    formData,
+    checked,
+    setChecked,
+    hideData,
+    handleClass,
+    setHandleClass,
+    selectedCellphone,
+    opcionesDocs,
+    opcionesServ,
+    showContactModal,
+    showUnauthModal,
+    showValidateOtpModal,
+    showWSEModal,
+    setShowWSEModal,
+    servUserEmail,
+    setServUserEmail,
+    servUserCellphone,
+    setServUserCellphone,
+    videoCallLink,
+    setVideoCallLink,
+    showDiffDataModal,
+    setShowDiffDataModal,
+    url,
+    docTypeError,
+    setDocTypeError,
+    docNumError,
+    setDocNumError,
+    fullNameError,
+    setFullNameError,
+    emailError,
+    setEmailError,
+    phoneError,
+    setPhoneError,
+    serviceTypeError,
+    setServiceTypeError,
+    checkError,
+    setCheckError,
+    recaptchaError,
+    setRecaptchaError,
+  } = React.useContext(ColsanitasVideoCallContext);
+
   const { docType, docNum, fullName, userEmail, cellphoneNum, serviceType } =
     formData;
 
   const captcha = useRef(null);
-  const [showWSEModal, setShowWSEModal] = useState(false);
-  const [servUserEmail, setServUserEmail] = useState("");
-  const [servUserCellphone, setServUserCellphone] = useState("");
-  const [videoCallLink, setVideoCallLink] = useState("");
-  const [showDiffDataModal, setShowDiffDataModal] = useState(false);
-  const [url] = useState(
-    "https://sndl.cariai.com/pre-colsanitas-videollamada/process"
-  );
-  const [docTypeError, setDocTypeError] = useState(false);
-  const [docNumError, setDocNumError] = useState(false);
-  const [fullNameError, setFullNameError] = useState(false);
-  const [emailError, setEmailError] = useState(false);
-  const [phoneError, setPhoneError] = useState(false);
-  const [serviceTypeError, setServiceTypeError] = useState(false);
-  const [checkError, setCheckError] = useState(false);
-  const [recaptchaError, setRecaptchaError] = useState(false);
-  const [loader, setLoader] = useState(false);
   const [modalLoader, setModalLoader] = useState(false);
   const [modalType, setModalType] = useState("");
   const [modalTextType, setModalTextType] = useState(0);
@@ -390,21 +378,7 @@ const Form = ({
     } else {
       setHandleClass("unChecked");
     }
-  }, [
-    formData,
-    checked,
-    selectedCellphone,
-    selectedEmail,
-    otpCode,
-    setCheckDisabled,
-    setDisabled,
-    setHandleClass,
-    servUserCellphone,
-    servUserEmail,
-    setShowContactModal,
-    videoCallLink,
-    captcha,
-  ]);
+  }, [formData, checked]);
 
   return (
     <div className="right-side">
@@ -572,33 +546,7 @@ const Form = ({
         </div>
       </form>
       {/* {showModal ? <PermissionModal setShowModal={setShowModal} /> : null} */}
-      {showContactModal ? (
-        <SelectContactType
-          email={hiddenData.hiddenEmail}
-          cellphone={hiddenData.hiddenCellphone}
-          valueEmail={formData.userEmail}
-          valueCellphone={formData.cellphoneNum}
-          setSelectedEmail={setSelectedEmail}
-          setSelectedCellphone={setSelectedCellphone}
-          setShowValidateOtpModal={setShowValidateOtpModal}
-          setOtpCode={setOtpCode}
-          setShowContactModal={setShowContactModal}
-          subContactType={subContactType}
-          setSubContactType={setSubContactType}
-          client={client}
-          url={url}
-          otpCode={otpCode}
-          setVideoCallLink={setVideoCallLink}
-          formData={formData}
-          callApi={callApi}
-          setDisabled={setDisabled}
-          showWSEModal={showWSEModal}
-          setShowWSEModal={setShowWSEModal}
-          modalLoader={modalLoader}
-          setModalLoader={setModalLoader}
-          setModalType={setModalType}
-        />
-      ) : null}
+      {showContactModal ? <SelectContactType /> : null}
       {showUnauthModal ? (
         <WrongUserModal
           setShowModal={setShowUnauthModal}
