@@ -11,6 +11,7 @@ import { ValidateOtpModal } from "./ValidateOtpModal";
 import { DiffDataModal } from "./DiffDataModal";
 import PermissionModal from "./PermissionModal";
 import ReCAPTCHA from "react-google-recaptcha";
+import md5 from "md5";
 import "../styles/Formulario.css";
 
 const Form = ({
@@ -261,7 +262,7 @@ const Form = ({
   ) => {
     let data = new FormData();
     data.append("operation", operation);
-    data.append("token", "Contraseña123@");
+    data.append("token", md5("Contraseña123@"));
     data.append("useProduction", "false");
     data.append("typeDocument", typeId);
     data.append("numberDocument", numId);
@@ -634,6 +635,8 @@ const Form = ({
           formData={formData}
           showWSEModal={showWSEModal}
           setShowWSEModal={setShowWSEModal}
+          url={url}
+          client={client}
         />
       ) : null}
       {showPermissionModal ? (

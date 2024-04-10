@@ -71,7 +71,7 @@ const AppUI = ({
       (actualDay === 6 && actualHour < 8) ||
       (actualDay === 6 && actualHour >= 14) ||
       (actualDay !== 6 && actualHour < 8) ||
-      (actualDay !== 6 && actualHour >= 18) ||
+      (actualDay !== 6 && actualHour >= 20) ||
       //ANTES DE PASAR A PRODUCCIÓN VOLVER A 18
       isHoliday === true ? (
         <div className="ot-cont">

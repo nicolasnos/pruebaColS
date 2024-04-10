@@ -8,6 +8,7 @@ import { OtpInput } from "../Atoms/OtpInput";
 import { Timer } from "../Atoms/Timer";
 import Button from "../Atoms/Button";
 import { CloseIcon } from "../Atoms/CloseIcon";
+import md5 from "md5";
 
 import "../styles/ValidateOtpModal.css";
 
@@ -31,9 +32,11 @@ const ValidateOtpModal = ({
   setGoBackButton,
   otpError,
   setOtpError,
-  callApi,
   formData,
   setShowWSEModal,
+  url,
+  client,
+  callApi,
 }) => {
   /** Se crea el estado para los segundos y se inicializa en 60 segundos. */
   const [seconds, setSeconds] = useState(60);
@@ -58,7 +61,35 @@ const ValidateOtpModal = ({
     setOtp(value);
   };
 
+  const valOtpApi = async (operation, otp, userOtp) => {
+    let data = new FormData();
+    data.append("operation", operation);
+    data.append("token", md5("Contraseña123@"));
+    data.append("useProduction", "false");
+    data.append("otp", otp);
+    data.append("userOtp", userOtp);
+
+    let headers = new Headers();
+    headers.append("Content-Type", "multipart/form-data");
+
+    try {
+      const response = await client.postData(url, data, headers);
+      return response;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const validateOtp = () => {
+    let operation = "validateOtp";
+    const res = valOtpApi(operation, otp, receivedOtp);
+    res
+      .then((data) => {
+        console.log("Respuesta", data);
+      })
+      .catch((error) => {
+        console.log("Error", error);
+      });
     if (parseInt(otp) === receivedOtp) {
       handleClickClose();
       setShowPermissionModal(true);
