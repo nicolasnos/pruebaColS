@@ -583,13 +583,6 @@ const Form = () => {
       {showPermissionModal ? <PermissionModal modalType={modalType} /> : null}
       {showDiffDataModal ? (
         <DiffDataModal
-          setShowDiffDataModal={setShowDiffDataModal}
-          setVideoCallLink={setVideoCallLink}
-          videoCallLink={videoCallLink}
-          client={client}
-          url={url}
-          formData={formData}
-          setShowPermissionModal={setShowPermissionModal}
           setModalType={setModalType}
           setShowWSEModal={setShowWSEModal}
         />

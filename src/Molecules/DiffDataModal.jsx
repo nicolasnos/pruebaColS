@@ -15,6 +15,7 @@ const DiffDataModal = ({ setModalType, setShowWSEModal }) => {
     setVideoCallLink,
     formData,
     setShowPermissionModal,
+    key,
   } = React.useContext(ColsanitasVideoCallContext);
 
   const handleClickClose = (e) => {
@@ -43,6 +44,7 @@ const DiffDataModal = ({ setModalType, setShowWSEModal }) => {
     data.append("serviceType", service);
     data.append("otpMetod", subContactType);
     data.append("otpForwarding", 0);
+    data.append("key", key);
 
     let headers = new Headers();
     headers.append("Content-Type", "multipart/form-data");
@@ -75,8 +77,8 @@ const DiffDataModal = ({ setModalType, setShowWSEModal }) => {
         contactMethod
       );
 
-      if (apiCallResult.status === 200) {
-        setVideoCallLink(apiCallResult.message[0].url);
+      if (apiCallResult.message === "Success") {
+        setVideoCallLink(apiCallResult.url);
         setModalType("diffData");
       } else {
         console.log("Hubo un error en el servicio", apiCallResult);
