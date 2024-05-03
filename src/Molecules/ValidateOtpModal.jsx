@@ -12,7 +12,7 @@ import { CloseIcon } from "../Atoms/CloseIcon";
 
 import "../styles/ValidateOtpModal.css";
 
-const ValidateOtpModal = ({ email, cellphone, contactType, callApi }) => {
+const ValidateOtpModal = ({ contactType }) => {
   const {
     otpError,
     setOtpError,
@@ -33,6 +33,9 @@ const ValidateOtpModal = ({ email, cellphone, contactType, callApi }) => {
     setOtpCode,
     setShowContactModal,
     setShowWSEModal,
+    servUserEmail,
+    servUserCellphone,
+    executeService,
   } = React.useContext(ColsanitasVideoCallContext);
 
   /** Se crea el estado para los segundos y se inicializa en 60 segundos. */
@@ -119,7 +122,29 @@ const ValidateOtpModal = ({ email, cellphone, contactType, callApi }) => {
     let contactMethod = subContactType;
     let otpForwarding = 1;
 
-    const apiCall = await callApi(
+    // const apiCall = await callApi(
+    //   operation,
+    //   typeId,
+    //   numId,
+    //   userName,
+    //   email,
+    //   cellphone,
+    //   service,
+    //   contactMethod,
+    //   otpForwarding
+    // );
+    const apiCall = await executeService(
+      [
+        "operation",
+        "typeDocument",
+        "numberDocument",
+        "fullUserName",
+        "emailUser",
+        "phoneUser",
+        "serviceType",
+        "otpMetod",
+        "otpForwarding",
+      ],
       operation,
       typeId,
       numId,
@@ -130,7 +155,6 @@ const ValidateOtpModal = ({ email, cellphone, contactType, callApi }) => {
       contactMethod,
       otpForwarding
     );
-
     if (apiCall.message === "Success") {
       setOtpCode(apiCall.id);
       setShowValidateOtpModal(true);
@@ -144,12 +168,12 @@ const ValidateOtpModal = ({ email, cellphone, contactType, callApi }) => {
     setSeconds(60);
   };
 
-  if (contactType === email) {
+  if (contactType === "email") {
     text = "Correo: ";
-    text2 = email;
-  } else if (contactType === cellphone) {
+    text2 = servUserEmail;
+  } else if (contactType === "cellphone") {
     text = "Celular";
-    text2 = cellphone;
+    text2 = servUserCellphone;
   }
 
   useEffect(() => {

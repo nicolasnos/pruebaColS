@@ -9,9 +9,13 @@ import PermissionIMG from "../assets/images/Permissions.jpg";
 import exclamationCircle from "../assets/images/circle-exclamation.svg";
 import "../styles/ModalInfo.css";
 
-const PermissionModal = ({ modalType }) => {
-  const { setShowPermissionModal, setShowContactModal, videoCallLink } =
-    React.useContext(ColsanitasVideoCallContext);
+const PermissionModal = () => {
+  const {
+    setShowPermissionModal,
+    setShowContactModal,
+    videoCallLink,
+    modalType,
+  } = React.useContext(ColsanitasVideoCallContext);
 
   const handleGoBack = (e) => {
     e.preventDefault();

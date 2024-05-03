@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { ColsanitasVideoCallContext } from "../context";
 import { BaseModal } from "../pages/BaseModal";
 import { CloseIcon } from "../Atoms/CloseIcon";
@@ -9,16 +9,7 @@ import Header from "./Header";
 import "../styles/BaseModal.css";
 import "../styles/SelectContactType.css";
 
-const SelectContactType = ({
-  email,
-  valueEmail,
-  cellphone,
-  valueCellphone,
-  modalLoader,
-  setModalLoader,
-  callApi,
-  setModalType,
-}) => {
+const SelectContactType = () => {
   const {
     formData,
     setShowContactModal,
@@ -30,6 +21,13 @@ const SelectContactType = ({
     subContactType,
     setSubContactType,
     setShowWSEModal,
+    servUserEmail,
+    servUserCellphone,
+    modalLoader,
+    setModalLoader,
+    key,
+    executeService,
+    setModalType,
   } = React.useContext(ColsanitasVideoCallContext);
 
   const [checkedEmail, setCheckedEmail] = useState(false);
@@ -72,7 +70,30 @@ const SelectContactType = ({
       setModalLoader(false);
       return;
     }
-    const apiCall = await callApi(
+    // const apiCall = await callApi(
+    //   operation,
+    //   typeId,
+    //   numId,
+    //   userName,
+    //   email,
+    //   cellphone,
+    //   service,
+    //   contactMethod,
+    //   otpForwarding
+    // );
+    const apiCall = await executeService(
+      [
+        "operation",
+        "typeDocument",
+        "numberDocument",
+        "fullUserName",
+        "emailUser",
+        "phoneUser",
+        "serviceType",
+        "otpMetod",
+        "otpForwarding",
+        "key",
+      ],
       operation,
       typeId,
       numId,
@@ -81,8 +102,10 @@ const SelectContactType = ({
       cellphone,
       service,
       contactMethod,
-      otpForwarding
+      otpForwarding,
+      key
     );
+    console.log("Data", apiCall);
     if (apiCall.message === "Success") {
       setOtpCode(apiCall.id);
       setVideoCallLink(apiCall.url);
@@ -129,8 +152,8 @@ const SelectContactType = ({
         <div className="radius-cont">
           <Input
             type="colsanitasRadioBtn"
-            label={email}
-            value={valueEmail}
+            label={servUserEmail}
+            value={servUserEmail}
             name={"sndEmail"}
             checked={checkedEmail}
             onChange={handleSelect}
@@ -139,8 +162,8 @@ const SelectContactType = ({
         <div className="radius-cont">
           <Input
             type="colsanitasRadioBtn"
-            label={cellphone}
-            value={valueCellphone}
+            label={servUserCellphone}
+            value={servUserCellphone}
             name={"sndCellphone"}
             checked={checkedCellphone}
             onChange={handleSelect}

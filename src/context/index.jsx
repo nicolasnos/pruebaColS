@@ -161,6 +161,9 @@ const ColsanitasVideoCallProvider = ({ children }) => {
   const [servUserCellphone, setServUserCellphone] = useState("");
   const [videoCallLink, setVideoCallLink] = useState("");
   const [showDiffDataModal, setShowDiffDataModal] = useState(false);
+  const [modalLoader, setModalLoader] = useState(false);
+  const [modalType, setModalType] = useState("");
+  const [modalTextType, setModalTextType] = useState(0);
   const [url] = useState(
     "https://sndl.cariai.com/pre-colsanitas-videollamada/process"
   );
@@ -220,6 +223,63 @@ const ColsanitasVideoCallProvider = ({ children }) => {
     return () => clearInterval(intervalId);
   });
 
+  const callApi = async (
+    operation,
+    typeId,
+    numId,
+    userName,
+    email,
+    cellphone,
+    service,
+    subContactType,
+    otpForwarding
+  ) => {
+    let data = new FormData();
+    data.append("operation", operation);
+    data.append("typeDocument", typeId);
+    data.append("numberDocument", numId);
+    data.append("fullUserName", userName);
+    data.append("emailUser", email);
+    data.append("phoneUser", cellphone);
+    data.append("serviceType", service);
+
+    if (operation === "userConsultOTP") {
+      data.append("otpMetod", subContactType);
+      data.append("otpForwarding", otpForwarding);
+      data.append("key", key);
+    }
+
+    let headers = new Headers();
+    headers.append("Content-Type", "multipart/form-data");
+
+    try {
+      const response = await client.postData(url, data, headers);
+      return response;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const executeService = async (keys, ...args) => {
+    let dataForm = new FormData();
+    if (keys.length !== args.length) {
+      console.error("La cantidad de llaves y valores no coinciden");
+      return;
+    }
+
+    for (let i = 0; i < keys.length; i++) {
+      dataForm.append(keys[i], args[i]);
+    }
+
+    // console.log(dataForm.get("typeDocument"));
+
+    const headers = new Headers();
+    headers.append("Content-Type", "multipart/form-data");
+
+    const res = client.postData(url, dataForm, headers);
+    return res;
+  };
+
   const actualDay = actualDate.getDay();
   const actualHour = actualDate.getHours();
   let isHoliday = holidayCalc.isHoliday(actualDate);
@@ -228,6 +288,8 @@ const ColsanitasVideoCallProvider = ({ children }) => {
     <ColsanitasVideoCallContext.Provider
       value={{
         client,
+        callApi,
+        executeService,
         opcionesDocs,
         opcionesServ,
         checked,
@@ -296,6 +358,12 @@ const ColsanitasVideoCallProvider = ({ children }) => {
         recaptchaError,
         setRecaptchaError,
         key,
+        modalLoader,
+        setModalLoader,
+        modalType,
+        setModalType,
+        modalTextType,
+        setModalTextType,
       }}
     >
       {children}

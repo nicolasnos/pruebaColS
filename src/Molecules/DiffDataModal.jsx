@@ -7,7 +7,7 @@ import { Paragraph } from "../Atoms/Paragraph";
 import Button from "../Atoms/Button";
 import "../styles/DiffDataModal.css";
 
-const DiffDataModal = ({ setModalType, setShowWSEModal }) => {
+const DiffDataModal = () => {
   const {
     setShowDiffDataModal,
     client,
@@ -16,6 +16,8 @@ const DiffDataModal = ({ setModalType, setShowWSEModal }) => {
     formData,
     setShowPermissionModal,
     key,
+    setModalType,
+    setShowWSEModal,
   } = React.useContext(ColsanitasVideoCallContext);
 
   const handleClickClose = (e) => {

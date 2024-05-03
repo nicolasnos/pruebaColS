@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { ColsanitasVideoCallContext } from "../context";
 import { Input } from "../Atoms/Input";
 import { AttentionSchedule } from "../Molecules/AttentionSchedule";
@@ -34,11 +34,9 @@ const Form = () => {
     setServUserEmail,
     servUserCellphone,
     setServUserCellphone,
-    videoCallLink,
-    setVideoCallLink,
     showDiffDataModal,
     setShowDiffDataModal,
-    url,
+    // url,
     docTypeError,
     setDocTypeError,
     docNumError,
@@ -56,23 +54,23 @@ const Form = () => {
     recaptchaError,
     setRecaptchaError,
     setFormData,
-    client,
+    callApi,
     loader,
     setLoader,
     setShowContactModal,
     setShowUnauthModal,
-    setShowPermissionModal,
     showPermissionModal,
-    key,
+    modalTextType,
+    setModalTextType,
+    // key,
+    executeService,
   } = React.useContext(ColsanitasVideoCallContext);
 
   const { docType, docNum, fullName, userEmail, cellphoneNum, serviceType } =
     formData;
 
   const captcha = useRef(null);
-  const [modalLoader, setModalLoader] = useState(false);
-  const [modalType, setModalType] = useState("");
-  const [modalTextType, setModalTextType] = useState(0);
+
   //nunca borrar este manejador tan mk
   const handleCheck = () => {
     setChecked(!checked);
@@ -245,43 +243,6 @@ const Form = () => {
     handleErrorCheck(e.target.checked);
   };
 
-  const callApi = async (
-    operation,
-    typeId,
-    numId,
-    userName,
-    email,
-    cellphone,
-    service,
-    subContactType,
-    otpForwarding
-  ) => {
-    let data = new FormData();
-    data.append("operation", operation);
-    data.append("typeDocument", typeId);
-    data.append("numberDocument", numId);
-    data.append("fullUserName", userName);
-    data.append("emailUser", email);
-    data.append("phoneUser", cellphone);
-    data.append("serviceType", service);
-
-    if (operation === "userConsultOTP") {
-      data.append("otpMetod", subContactType);
-      data.append("otpForwarding", otpForwarding);
-      data.append("key", key);
-    }
-
-    let headers = new Headers();
-    headers.append("Content-Type", "multipart/form-data");
-
-    try {
-      const response = await client.postData(url, data, headers);
-      return response;
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   const validateData = async (e) => {
     e.preventDefault();
 
@@ -320,15 +281,33 @@ const Form = () => {
     }
 
     setLoader(true);
-    const apiCall = await callApi(
+    const apiCall = await executeService(
+      [
+        "operation",
+        "typeDocument",
+        "numberDocument",
+        "fullUserName",
+        "emailUser",
+        "phoneUser",
+        "serviceType",
+      ],
       operation,
       typeId,
       numId,
       userName,
-      email,
+      userEmail,
       cellphone,
       service
     );
+    // const apiCall = await callApi(
+    //   operation,
+    //   typeId,
+    //   numId,
+    //   userName,
+    //   email,
+    //   cellphone,
+    //   service
+    // );
 
     if (apiCall.status === 200) {
       setLoader(false);
@@ -553,25 +532,12 @@ const Form = () => {
         </div>
       </form>
       {/* {showModal ? <PermissionModal setShowModal={setShowModal} /> : null} */}
-      {showContactModal ? (
-        <SelectContactType
-          email={hiddenData.hiddenEmail}
-          cellphone={hiddenData.hiddenCellphone}
-          valueEmail={formData.userEmail}
-          valueCellphone={formData.cellphoneNum}
-          modalLoader={modalLoader}
-          setModalLoader={setModalLoader}
-          callApi={callApi}
-          setModalType={setModalType}
-        />
-      ) : null}
+      {showContactModal ? <SelectContactType /> : null}
       {showUnauthModal ? (
         <WrongUserModal modalTextType={modalTextType} />
       ) : null}
       {showValidateOtpModal ? (
         <ValidateOtpModal
-          email={hiddenData.hiddenEmail}
-          cellphone={hiddenData.hiddenCellphone}
           contactType={
             selectedCellphone !== ""
               ? hiddenData.hiddenCellphone
@@ -580,13 +546,8 @@ const Form = () => {
           callApi={callApi}
         />
       ) : null}
-      {showPermissionModal ? <PermissionModal modalType={modalType} /> : null}
-      {showDiffDataModal ? (
-        <DiffDataModal
-          setModalType={setModalType}
-          setShowWSEModal={setShowWSEModal}
-        />
-      ) : null}
+      {showPermissionModal ? <PermissionModal /> : null}
+      {showDiffDataModal ? <DiffDataModal /> : null}
       {showWSEModal ? <WSErrorModal setShowModal={setShowWSEModal} /> : null}
     </div>
   );
