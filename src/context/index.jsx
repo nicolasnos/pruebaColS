@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { HolidayCalculator } from "../App/HolidayCalculator";
 import { Client } from "../App/Client";
 import propTypes from "prop-types";
 
@@ -7,7 +6,6 @@ const ColsanitasVideoCallContext = React.createContext();
 
 const ColsanitasVideoCallProvider = ({ children }) => {
   const [actualDate, setActualDate] = useState(new Date());
-  const holidayCalc = new HolidayCalculator();
   const client = new Client();
 
   /** Se inicializa un objeto que va a almacenar los datos que recolecte el formulario. Esto evitará manejar un estado por campo en el formulario */
@@ -141,7 +139,8 @@ const ColsanitasVideoCallProvider = ({ children }) => {
 
   /** Empezamos a setear los estados */
   // const [isHoliday, setIsHoliday] = useState(false);
-  const [key] = useState("33aee550240479398ff95acf320dc455");
+  const [calendarLoader, setCalendarLoader] = useState(false);
+  const [onTime, setOnTime] = useState(1);
   const [checked, setChecked] = useState(false); // Para el check de TyC del formulario
   const [disabled, setDisabled] = useState(true); // Para el botón de "Ingresar"
   const [goBackButton, setGoBackButton] = useState(true);
@@ -166,6 +165,8 @@ const ColsanitasVideoCallProvider = ({ children }) => {
   const [modalType, setModalType] = useState("");
   const [modalTextType, setModalTextType] = useState(0);
   const [contactType, setContactType] = useState("");
+  const [actualDay, setActualDay] = useState(actualDate.getDay());
+  const [actualHour, setActualHour] = useState(actualDate.getHours());
   const [url] = useState(
     "https://qa.cariai.com/colsanitasdevelop/process" // https://qa.cariai.com/colsanitasdevelop/process || https://sndl.cariai.com/pre-colsanitas-videollamada/process
   );
@@ -183,39 +184,6 @@ const ColsanitasVideoCallProvider = ({ children }) => {
   const [loader, setLoader] = useState(false);
   /** Se definen las funciones básicas */
 
-  /** Esta función se utilizará para reemplazar algunos carácteres del email y el celular del usuario cuando
-   * solicite el envío de la otp */
-  function hideData(email, cellphone) {
-    let hiddenEmail = "";
-    let hiddenCellphone = "";
-
-    if (email.includes("@")) {
-      const [username, domain] = email.split("@");
-      if (email !== "") {
-        const hiddenUsername =
-          username.substring(0, 2) +
-          "*".repeat(username.length - 4) +
-          username.slice(-2);
-
-        hiddenEmail = `${hiddenUsername}@${domain}`;
-      }
-    }
-
-    if (cellphone.length === 10) {
-      if (cellphone !== "") {
-        hiddenCellphone =
-          cellphone.substring(0, 3) +
-          "*".repeat(cellphone.length - 5) +
-          cellphone.slice(-2);
-      }
-    }
-
-    return {
-      hiddenEmail: hiddenEmail,
-      hiddenCellphone: hiddenCellphone,
-    };
-  }
-
   /** Este useEffect se encarga de hacer console logs para probar distintas cosas en index.js */
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -224,43 +192,6 @@ const ColsanitasVideoCallProvider = ({ children }) => {
 
     return () => clearInterval(intervalId);
   });
-
-  const callApi = async (
-    operation,
-    typeId,
-    numId,
-    userName,
-    email,
-    cellphone,
-    service,
-    subContactType,
-    otpForwarding
-  ) => {
-    let data = new FormData();
-    data.append("operation", operation);
-    data.append("typeDocument", typeId);
-    data.append("numberDocument", numId);
-    data.append("fullUserName", userName);
-    data.append("emailUser", email);
-    data.append("phoneUser", cellphone);
-    data.append("serviceType", service);
-
-    if (operation === "userConsultOTP") {
-      data.append("otpMetod", subContactType);
-      data.append("otpForwarding", otpForwarding);
-      data.append("key", key);
-    }
-
-    let headers = new Headers();
-    headers.append("Content-Type", "multipart/form-data");
-
-    try {
-      const response = await client.postData(url, data, headers);
-      return response;
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   const executeService = async (keys, ...args) => {
     let dataForm = new FormData();
@@ -282,15 +213,30 @@ const ColsanitasVideoCallProvider = ({ children }) => {
     return res;
   };
 
-  const actualDay = actualDate.getDay();
-  const actualHour = actualDate.getHours();
-  let isHoliday = holidayCalc.isHoliday(actualDate);
+  const validateSchedule = () => {
+    const operation = "validateCalendar";
+    const serviceDate = `${actualDate.getFullYear()}-${actualDate.getMonth()}-${actualDate.getDay()} ${actualDate.getHours()}:${actualDate.getMinutes()}`;
+    const res = executeService(
+      ["operation", "dateConsult"],
+      operation,
+      serviceDate
+    );
+    return res
+      .then((data) => {
+        setOnTime(data.message.status_calendar);
+        setCalendarLoader(false);
+      })
+      .catch((error) => {
+        console.error("Error en validateSchedule", error);
+        setCalendarLoader(true);
+        setShowWSEModal(true);
+      });
+  };
 
   return (
     <ColsanitasVideoCallContext.Provider
       value={{
         client,
-        callApi,
         executeService,
         opcionesDocs,
         opcionesServ,
@@ -328,10 +274,10 @@ const ColsanitasVideoCallProvider = ({ children }) => {
         setShowPermissionModal,
         loader,
         setLoader,
-        hideData,
         actualDay,
+        setActualDay,
         actualHour,
-        isHoliday,
+        setActualHour,
         showWSEModal,
         setShowWSEModal,
         servUserEmail,
@@ -359,7 +305,6 @@ const ColsanitasVideoCallProvider = ({ children }) => {
         setCheckError,
         recaptchaError,
         setRecaptchaError,
-        key,
         modalLoader,
         setModalLoader,
         modalType,
@@ -368,6 +313,10 @@ const ColsanitasVideoCallProvider = ({ children }) => {
         setModalTextType,
         contactType,
         setContactType,
+        onTime,
+        calendarLoader,
+        setCalendarLoader,
+        validateSchedule,
       }}
     >
       {children}
