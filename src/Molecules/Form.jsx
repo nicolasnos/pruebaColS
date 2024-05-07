@@ -19,10 +19,10 @@ const Form = () => {
     formData,
     checked,
     setChecked,
-    hideData,
+    // hideData,
     handleClass,
     setHandleClass,
-    selectedCellphone,
+    // selectedCellphone,
     opcionesDocs,
     opcionesServ,
     showContactModal,
@@ -30,9 +30,9 @@ const Form = () => {
     showValidateOtpModal,
     showWSEModal,
     setShowWSEModal,
-    servUserEmail,
+    // servUserEmail,
     setServUserEmail,
-    servUserCellphone,
+    // servUserCellphone,
     setServUserCellphone,
     showDiffDataModal,
     setShowDiffDataModal,
@@ -254,6 +254,7 @@ const Form = () => {
     let cellphone = formData.cellphoneNum;
     let service = formData.serviceType;
     let terms = formData.accepted;
+    // const hiddenData = hideData(email, cellphone);
     //manejo de errores
     let errortipoDoc = handleErrorIDType(typeId);
     let errorNumeroDoc = handleErrorIDNum(numId);
@@ -286,7 +287,7 @@ const Form = () => {
         "operation",
         "typeDocument",
         "numberDocument",
-        "fullUserName",
+        "fullNameUser",
         "emailUser",
         "phoneUser",
         "serviceType",
@@ -299,52 +300,44 @@ const Form = () => {
       cellphone,
       service
     );
-    // const apiCall = await callApi(
-    //   operation,
-    //   typeId,
-    //   numId,
-    //   userName,
-    //   email,
-    //   cellphone,
-    //   service
-    // );
 
     if (apiCall.status === 200) {
       setLoader(false);
-      if (apiCall.message[0].estado === "HABILITADO") {
+      if (apiCall.message[0].estado === true) {
         setServUserEmail(apiCall.message[0].emailUsuario);
         setServUserCellphone(apiCall.message[0].telefonoUsuario);
         if (
-          apiCall.message[0].emailUsuario === email &&
-          apiCall.message[0].telefonoUsuario
+          (apiCall.message[0].fitData === 1) |
+          (apiCall.message[0].fitData === true)
         ) {
           setLoader(false);
           setShowContactModal(true);
         }
 
         if (
-          apiCall.message[0].emailUsuario !== email ||
-          apiCall.message[0].telefonoUsuario !== cellphone
+          (apiCall.message[0].fitData === 0) |
+          (apiCall.message[0].fitData === false) |
+          (apiCall.message[0].fitData === "")
         ) {
           setLoader(false);
           setShowDiffDataModal(true);
           setShowContactModal(false);
         }
       } else if (
-        apiCall.message[0].estado === "NO HABILITADO" &&
-        apiCall.message[0].motivo === "sin contrato"
+        apiCall.message[0].estado === false &&
+        apiCall.message[0].motivo === 1
       ) {
         setLoader(false);
         setShowUnauthModal(true);
         setModalTextType(0);
       } else if (
-        apiCall.message[0].estado === "NO HABILITADO" &&
+        apiCall.message[0].estado === false &&
         apiCall.message[0].motivo === "otro plan"
       ) {
         setLoader(false);
         setShowUnauthModal(true);
         setModalTextType(0);
-      } else if (apiCall.message[0].motivo === "sin vigencia") {
+      } else if (apiCall.message[0].motivo === 2) {
         setLoader(false);
         setShowUnauthModal(true);
         setModalTextType(1);
@@ -354,8 +347,6 @@ const Form = () => {
       setShowWSEModal(true);
     }
   };
-
-  const hiddenData = hideData(servUserEmail, servUserCellphone);
 
   /** Manejo de datos del componente para el renderizado */
   useEffect(() => {
@@ -536,16 +527,7 @@ const Form = () => {
       {showUnauthModal ? (
         <WrongUserModal modalTextType={modalTextType} />
       ) : null}
-      {showValidateOtpModal ? (
-        <ValidateOtpModal
-          contactType={
-            selectedCellphone !== ""
-              ? hiddenData.hiddenCellphone
-              : hiddenData.hiddenEmail
-          }
-          callApi={callApi}
-        />
-      ) : null}
+      {showValidateOtpModal ? <ValidateOtpModal callApi={callApi} /> : null}
       {showPermissionModal ? <PermissionModal /> : null}
       {showDiffDataModal ? <DiffDataModal /> : null}
       {showWSEModal ? <WSErrorModal setShowModal={setShowWSEModal} /> : null}

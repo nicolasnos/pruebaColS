@@ -12,12 +12,12 @@ import { CloseIcon } from "../Atoms/CloseIcon";
 
 import "../styles/ValidateOtpModal.css";
 
-const ValidateOtpModal = ({ contactType }) => {
+const ValidateOtpModal = () => {
   const {
     otpError,
     setOtpError,
     url,
-    key,
+    // key,
     otpCode,
     setShowPermissionModal,
     setHandleClass,
@@ -64,9 +64,8 @@ const ValidateOtpModal = ({ contactType }) => {
   const valOtpApi = async (operation, otp, userOtp) => {
     let data = new FormData();
     data.append("operation", operation);
-    data.append("otp", otp);
-    data.append("userOtp", userOtp);
-    data.append("key", key);
+    data.append("message", otp);
+    data.append("codeOtp", userOtp);
 
     const requestOptions = {
       method: "POST",
@@ -79,7 +78,10 @@ const ValidateOtpModal = ({ contactType }) => {
   };
 
   const validateOtp = async () => {
-    let operation = "validateOtp";
+    setOtpError(false);
+
+    let operation = "validatedatacod";
+
     const res = await valOtpApi(operation, otpCode, otp);
     if (res.status === 200) {
       handleClickClose();
@@ -155,23 +157,24 @@ const ValidateOtpModal = ({ contactType }) => {
       contactMethod,
       otpForwarding
     );
-    if (apiCall.message === "Success") {
-      setOtpCode(apiCall.id);
+    if (apiCall.message[0].estado === "EXITOSO") {
+      setOtpCode(apiCall.message[0].message);
       setShowValidateOtpModal(true);
       setShowContactModal(false);
     } else {
       console.log("Error al obtener el código de seguridad", apiCall);
       setShowWSEModal(true);
       setShowValidateOtpModal(false);
+      setOtpError(false);
     }
 
     setSeconds(60);
   };
 
-  if (contactType === "email") {
+  if (subContactType === "email") {
     text = "Correo: ";
     text2 = servUserEmail;
-  } else if (contactType === "cellphone") {
+  } else if (subContactType === "telefono") {
     text = "Celular";
     text2 = servUserCellphone;
   }
@@ -191,15 +194,7 @@ const ValidateOtpModal = ({ contactType }) => {
       setResendDisabled(true);
       setGoBackButton(true);
     }
-  }, [
-    otp.length,
-    otp,
-    setHandleClass,
-    setDisabled,
-    seconds,
-    setResendDisabled,
-    setGoBackButton,
-  ]);
+  }, [otp.length, otp, seconds]);
 
   return (
     <BaseModal>

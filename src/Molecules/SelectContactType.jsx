@@ -25,7 +25,6 @@ const SelectContactType = () => {
     servUserCellphone,
     modalLoader,
     setModalLoader,
-    key,
     executeService,
     setModalType,
   } = React.useContext(ColsanitasVideoCallContext);
@@ -58,10 +57,6 @@ const SelectContactType = () => {
     let operation = "userConsultOTP";
     let typeId = formData.docType;
     let numId = formData.docNum;
-    let userName = formData.fullName;
-    let email = formData.userEmail;
-    let cellphone = formData.cellphoneNum;
-    let service = formData.serviceType;
     let contactMethod = subContactType;
     let otpForwarding = 0;
     setModalLoader(true);
@@ -70,45 +65,25 @@ const SelectContactType = () => {
       setModalLoader(false);
       return;
     }
-    // const apiCall = await callApi(
-    //   operation,
-    //   typeId,
-    //   numId,
-    //   userName,
-    //   email,
-    //   cellphone,
-    //   service,
-    //   contactMethod,
-    //   otpForwarding
-    // );
+
     const apiCall = await executeService(
       [
         "operation",
         "typeDocument",
         "numberDocument",
-        "fullUserName",
-        "emailUser",
-        "phoneUser",
-        "serviceType",
         "otpMetod",
         "otpForwarding",
-        "key",
       ],
       operation,
       typeId,
       numId,
-      userName,
-      email,
-      cellphone,
-      service,
       contactMethod,
-      otpForwarding,
-      key
+      otpForwarding
     );
-    console.log("Data", apiCall);
-    if (apiCall.message === "Success") {
-      setOtpCode(apiCall.id);
-      setVideoCallLink(apiCall.url);
+
+    if (apiCall.message[0].estado === "EXITOSO") {
+      setOtpCode(apiCall.message[0].message);
+      setVideoCallLink(apiCall.message[0].url);
       setModalLoader(false);
       setShowValidateOtpModal(true);
       setShowContactModal(false);

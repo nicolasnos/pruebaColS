@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { HolidayCalculator } from "../App/HolidayCalculator";
 import { Client } from "../App/Client";
+import propTypes from "prop-types";
 
 const ColsanitasVideoCallContext = React.createContext();
 
@@ -164,8 +165,9 @@ const ColsanitasVideoCallProvider = ({ children }) => {
   const [modalLoader, setModalLoader] = useState(false);
   const [modalType, setModalType] = useState("");
   const [modalTextType, setModalTextType] = useState(0);
+  const [contactType, setContactType] = useState("");
   const [url] = useState(
-    "https://sndl.cariai.com/pre-colsanitas-videollamada/process"
+    "https://qa.cariai.com/colsanitasdevelop/process" // https://qa.cariai.com/colsanitasdevelop/process || https://sndl.cariai.com/pre-colsanitas-videollamada/process
   );
   // Errores de inputs
   const [otpError, setOtpError] = useState(false);
@@ -364,11 +366,17 @@ const ColsanitasVideoCallProvider = ({ children }) => {
         setModalType,
         modalTextType,
         setModalTextType,
+        contactType,
+        setContactType,
       }}
     >
       {children}
     </ColsanitasVideoCallContext.Provider>
   );
+};
+
+ColsanitasVideoCallProvider.propTypes = {
+  children: propTypes.node.isRequired,
 };
 
 export { ColsanitasVideoCallContext, ColsanitasVideoCallProvider };
