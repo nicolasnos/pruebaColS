@@ -1,8 +1,8 @@
-import React from "react";
 import "../styles/Footer.css";
 import { InfoIcon } from "../Atoms/InfoIcon";
 import pc from "../assets/images/pc.svg";
 import cellphone from "../assets/images/Cellphone.svg";
+import mariaPaulaLogo from "../assets/images/logoMariaPaula.svg";
 import kiosco from "../assets/images/Kiosco.svg";
 
 const Footer = () => {
@@ -39,7 +39,7 @@ const Footer = () => {
         <div className="second-main-cont">
           <InfoIcon
             name="whatsapp"
-            image={cellphone}
+            image={mariaPaulaLogo}
             imageText="Icono celular"
             text="Whatsapp"
             url="https://wa.me/573103107676"
