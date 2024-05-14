@@ -27,6 +27,7 @@ const SelectContactType = () => {
     setModalLoader,
     executeService,
     setModalType,
+    validateSchedule,
   } = React.useContext(ColsanitasVideoCallContext);
 
   const [checkedEmail, setCheckedEmail] = useState(false);
@@ -120,7 +121,10 @@ const SelectContactType = () => {
         confirmación
       </p>
       <form
-        onSubmit={handleSubmit}
+        onSubmit={(e) => {
+          validateSchedule();
+          handleSubmit(e);
+        }}
         className="colsanitas-contact-type-form"
         name="contact-type"
       >

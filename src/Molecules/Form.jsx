@@ -58,6 +58,7 @@ const Form = () => {
     modalTextType,
     setModalTextType,
     executeService,
+    validateSchedule,
   } = React.useContext(ColsanitasVideoCallContext);
 
   const { docType, docNum, fullName, userEmail, cellphoneNum, serviceType } =
@@ -510,7 +511,10 @@ const Form = () => {
           <Button
             variant={"iconButton"}
             value={"Ingresar"}
-            onClick={validateData}
+            onClick={(e) => {
+              validateSchedule();
+              validateData(e);
+            }}
             type={"button"}
             loader={loader}
           />

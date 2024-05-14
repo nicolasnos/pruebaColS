@@ -36,6 +36,7 @@ const ValidateOtpModal = () => {
     servUserEmail,
     servUserCellphone,
     executeService,
+    validateSchedule,
   } = React.useContext(ColsanitasVideoCallContext);
 
   /** Se crea el estado para los segundos y se inicializa en 60 segundos. */
@@ -199,7 +200,12 @@ const ValidateOtpModal = () => {
   return (
     <BaseModal>
       <div className="modal-close-icon">
-        <span onClick={handleClickClose}>
+        <span
+          onClick={() => {
+            validateSchedule();
+            handleClickClose();
+          }}
+        >
           <CloseIcon />
         </span>
       </div>
@@ -237,7 +243,10 @@ const ValidateOtpModal = () => {
             variant={"resendOtp"}
             disabled={resendDisabled}
             value={"Volver a enviar el código"}
-            onClick={handleClickResend}
+            onClick={() => {
+              validateSchedule();
+              handleClickResend();
+            }}
             setResendDisabled={setResendDisabled}
           />
           <Timer seconds={seconds} />
@@ -247,7 +256,10 @@ const ValidateOtpModal = () => {
             variant={"modalGoBackBtn"}
             value={"Regresar"}
             className={"modal-btn-back"}
-            onClick={handleClickBack}
+            onClick={() => {
+              validateSchedule();
+              handleClickBack();
+            }}
             disabled={goBackButton}
             setGoBackButton={setGoBackButton}
           />
@@ -256,7 +268,10 @@ const ValidateOtpModal = () => {
             value={"Ingresar"}
             disabled={disabled}
             className={"modal-btn-send"}
-            onClick={validateOtp}
+            onClick={() => {
+              validateSchedule();
+              validateOtp();
+            }}
           />
         </div>
       </form>

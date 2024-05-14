@@ -19,6 +19,7 @@ const DiffDataModal = () => {
     setModalType,
     setShowWSEModal,
     executeService,
+    validateSchedule,
   } = React.useContext(ColsanitasVideoCallContext);
 
   const handleClickClose = (e) => {
@@ -127,7 +128,10 @@ const DiffDataModal = () => {
         variant={"primary"}
         value={"Ingresar"}
         className={"modal-btn-send"}
-        onClick={changeModals}
+        onClick={() => {
+          validateSchedule();
+          changeModals();
+        }}
       />
     </BaseModal>
   );
