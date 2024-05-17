@@ -167,8 +167,9 @@ const ColsanitasVideoCallProvider = ({ children }) => {
   const [contactType, setContactType] = useState("");
   const [actualDay, setActualDay] = useState(actualDate.getDay());
   const [actualHour, setActualHour] = useState(actualDate.getHours());
+  const [calendarText, setCalendarText] = useState("");
   const [url] = useState(
-    "https://qa.cariai.com/colsanitasdevelop/process" // https://qa.cariai.com/colsanitasdevelop/process || https://sndl.cariai.com/pre-colsanitas-videollamada/process
+    "https://cariai.com/colsanitasdevelop/process" // https://qa.cariai.com/colsanitasdevelop/process || https://sndl.cariai.com/pre-colsanitas-videollamada/process
   );
   // Errores de inputs
   const [otpError, setOtpError] = useState(false);
@@ -224,6 +225,7 @@ const ColsanitasVideoCallProvider = ({ children }) => {
     return res
       .then((data) => {
         setOnTime(data.message.status_calendar);
+        setCalendarText(data.message.description_calendar);
         setCalendarLoader(false);
       })
       .catch((error) => {
@@ -317,6 +319,7 @@ const ColsanitasVideoCallProvider = ({ children }) => {
         calendarLoader,
         setCalendarLoader,
         validateSchedule,
+        calendarText,
       }}
     >
       {children}

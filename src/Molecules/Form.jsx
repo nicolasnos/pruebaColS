@@ -370,7 +370,10 @@ const Form = () => {
             options={opcionesDocs}
             value={docType}
             name={"docType"}
-            onChange={handleChange}
+            onChange={(e) => {
+              handleChange(e);
+              validateSchedule();
+            }}
             id={"docType"}
             docTypeError={docTypeError}
           />
@@ -384,7 +387,10 @@ const Form = () => {
             placeHolder="Ej: 1223456789"
             value={docNum}
             name={"docNum"}
-            onChange={handleChange}
+            onChange={(e) => {
+              handleChange(e);
+              validateSchedule();
+            }}
             numberDocError={docNumError}
           />
         </div>
@@ -399,7 +405,10 @@ const Form = () => {
             placeHolder="Ej: Juan Paz"
             value={fullName}
             name={"fullName"}
-            onChange={handleChange}
+            onChange={(e) => {
+              handleChange(e);
+              validateSchedule();
+            }}
             fullNameError={fullNameError}
           />
           <Input
@@ -410,7 +419,10 @@ const Form = () => {
             placeHolder="Ej: juan@gmail.com"
             value={userEmail}
             name={"userEmail"}
-            onChange={handleChange}
+            onChange={(e) => {
+              handleChange(e);
+              validateSchedule();
+            }}
             emailError={emailError}
           />
         </div>
@@ -425,7 +437,10 @@ const Form = () => {
             placeHolder="Ej: 310222311"
             value={cellphoneNum}
             name={"cellphoneNum"}
-            onChange={handleChange}
+            onChange={(e) => {
+              handleChange(e);
+              validateSchedule();
+            }}
             phoneError={phoneError}
           />
           <Input
@@ -439,7 +454,10 @@ const Form = () => {
             options={opcionesServ}
             value={serviceType}
             name={"serviceType"}
-            onChange={handleChange}
+            onChange={(e) => {
+              handleChange(e);
+              validateSchedule();
+            }}
             serviceTypeError={serviceTypeError}
           />
         </div>
