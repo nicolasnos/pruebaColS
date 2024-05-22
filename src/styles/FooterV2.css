@@ -166,7 +166,6 @@ footer a {
   }
   .element3 {
     position: relative;
-    right: -8px;
   }
   .element1 figure,
   .element2 figure,
@@ -188,8 +187,8 @@ footer a {
   .element3 figure svg {
     display: block;
     position: relative;
-    left: 3px;
-    width: 100%;
+    left: 5px;
+    width: 85%;
   }
 
   .element4,
@@ -199,6 +198,7 @@ footer a {
     border-radius: 100px;
     margin: 10px 0;
     height: 40px;
+    font-size: medium;
   }
 
   .element4 {
