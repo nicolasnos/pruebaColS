@@ -133,15 +133,26 @@ footer a {
 @media (max-width: 600px) {
   footer {
     width: 100%;
+    flex-direction: column;
+    height: auto;
   }
 
   .info-p {
-    top: -10px;
+    top: 20px;
+    padding: 0;
+  }
+
+  .first-line {
+    padding-top: 30px;
+    flex-direction: column;
+    height: auto;
   }
 
   .second-line {
-    justify-content: space-between;
-    height: 45px;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    background-color: transparent;
   }
 
   .element1,
@@ -149,8 +160,9 @@ footer a {
   .element3 {
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 15px;
     font-size: 12px;
+    padding: 10px 0;
   }
   .element3 {
     position: relative;
@@ -177,9 +189,16 @@ footer a {
     display: block;
     position: relative;
     left: 3px;
-    width: 32px;
-    height: 32px;
-    padding: 3px;
+    width: 100%;
+  }
+
+  .element4,
+  .element5,
+  .element6 {
+    background-color: #3385ad;
+    border-radius: 100px;
+    margin: 10px 0;
+    height: 40px;
   }
 
   .element4 {
@@ -207,12 +226,12 @@ footer a {
     display: flex;
     align-items: center;
     font-size: 10px;
-    padding: 8px;
+    padding: 8px 8px 8px 15px;
   }
   .element6 {
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+    padding-left: 15px;
     font-size: 12px;
   }
 
@@ -224,5 +243,9 @@ footer a {
 
   .copyright {
     font-size: 10px;
+    bottom: -10px;
+    width: 100%;
+    background-color: #006699;
+    text-align: center;
   }
 }
