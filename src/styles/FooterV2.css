@@ -1,0 +1,228 @@
+footer {
+  max-width: 100%;
+  height: 300px;
+  background-color: #006699;
+  color: #ffffff;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+footer a {
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.info-p {
+  font-size: large;
+  position: relative;
+  top: -3px;
+  text-align: center;
+  padding: 0 5px;
+}
+
+.first-line {
+  width: 80%;
+  height: 60px;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding-right: 30px;
+}
+
+.second-line {
+  width: 80%;
+  height: 60px;
+  display: flex;
+  justify-content: space-between;
+  background-color: #3385ad;
+  border-radius: 100px;
+  padding-right: 30px;
+}
+
+.element1,
+.element2,
+.element3 {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+.element1 figure,
+.element2 figure {
+  margin: auto;
+  background-color: white;
+  border-radius: 100px;
+  display: flex;
+  place-content: center;
+  padding: 2px;
+}
+.element3 figure svg {
+  display: none;
+}
+.kiosco {
+  margin: auto;
+  background-color: white;
+  border-radius: 100px;
+  display: flex;
+  justify-content: center;
+  padding: 5px;
+}
+.kiosco img {
+  position: relative;
+  left: 1px;
+  height: 40px;
+  width: 40px;
+}
+
+.element4 {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  height: 100%;
+}
+.element4 figure {
+  margin: auto;
+  height: 55px;
+  width: 55px;
+  background-color: white;
+  border-radius: 100px;
+  display: flex;
+  place-content: center;
+  padding: 2px;
+}
+.element4 figure img {
+  width: 90%;
+}
+
+.element5 {
+  display: flex;
+  align-items: center;
+}
+.element6 {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.element4 div p,
+.element5 div p,
+.element6 div p {
+  margin: auto;
+}
+
+.functionalities {
+  text-align: left;
+  width: 100%;
+  padding-left: 40px;
+  margin-top: 10px;
+}
+.functionalities a {
+  text-decoration: underline;
+  margin-left: 5px;
+}
+
+.copyright {
+  font-size: 14px;
+  position: relative;
+  bottom: -30px;
+}
+
+/* Media query para mobiles */
+@media (max-width: 600px) {
+  footer {
+    width: 100%;
+  }
+
+  .info-p {
+    top: -10px;
+  }
+
+  .second-line {
+    justify-content: space-between;
+    height: 45px;
+  }
+
+  .element1,
+  .element2,
+  .element3 {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+  }
+  .element3 {
+    position: relative;
+    right: -8px;
+  }
+  .element1 figure,
+  .element2 figure,
+  .element3 figure {
+    margin: auto;
+    background-color: white;
+    border-radius: 100px;
+    display: flex;
+    place-content: center;
+    padding: 2px;
+  }
+  .element1 figure img,
+  .element2 figure img {
+    width: 100%;
+  }
+  .element3 figure img {
+    display: none;
+  }
+  .element3 figure svg {
+    display: block;
+    position: relative;
+    left: 3px;
+    width: 32px;
+    height: 32px;
+    padding: 3px;
+  }
+
+  .element4 {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    height: 100%;
+    font-size: 12px;
+  }
+  .element4 figure {
+    margin: auto;
+    height: 40px;
+    width: 40px;
+    background-color: white;
+    border-radius: 100px;
+    display: flex;
+    place-content: center;
+    padding: 2px;
+  }
+  .element4 figure img {
+    width: 90%;
+  }
+
+  .element5 {
+    display: flex;
+    align-items: center;
+    font-size: 10px;
+    padding: 8px;
+  }
+  .element6 {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    font-size: 12px;
+  }
+
+  .element4 div p,
+  .element5 div p,
+  .element6 div p {
+    margin: auto;
+  }
+
+  .copyright {
+    font-size: 10px;
+  }
+}
