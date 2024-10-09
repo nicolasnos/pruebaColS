@@ -106,7 +106,7 @@ const ColsanitasVideoCallProvider = ({ children }) => {
       stringValue: "PE",
     },
     {
-      id: 14,
+      id: 15,
       name: "Permiso por protección Temporal",
       value: "14",
       stringValue: "PT",
