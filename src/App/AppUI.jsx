@@ -1,10 +1,11 @@
 import React from "react";
+import { ColsanitasVideoCallContext } from "../context";
 
 /** Importación componentes */
 import Formulario from "../pages/Formulario";
 import { OutOfTime } from "../pages/OutOfTime";
+import { CalendarLoader } from "../Atoms/CalendarLoader";
 import Footer from "../Molecules/Footer";
-//import { Testing } from "../pages/Testing";
 import logo from "../assets/images/logo.png";
 
 /** Importación imagenes */
@@ -13,50 +14,40 @@ import mainImage from "../assets/images/main-img.jpg";
 /** Importación estilos  */
 import "./App.css";
 
-const AppUI = ({
-  date,
-  initialData,
-  validationArray,
-  opcionesDocs,
-  opcionesServ,
-  checked,
-  setChecked,
-  disabled,
-  setDisabled,
-  checkDisabled,
-  setCheckDisabled,
-  showUnauthModal,
-  setShowUnauthModal,
-  showContactModal,
-  setShowContactModal,
-  showValidateOtpModal,
-  setShowValidateOtpModal,
-  handleClass,
-  setHandleClass,
-  formData,
-  setFormData,
-  selectedEmail,
-  setSelectedEmail,
-  selectedCellphone,
-  setSelectedCellphone,
-  otpCode,
-  setOtpCode,
-  hideData,
-  subContactType,
-  setSubContactType,
-  showPermissionModal,
-  setShowPermissionModal,
-  isHoliday,
-  actualDay,
-  actualHour,
-  resendDisabled,
-  setResendDisabled,
-  goBackButton,
-  setGoBackButton,
-  client,
-  otpError,
-  setOtpError,
-}) => {
+const AppUI = () => {
+  const {
+    actualDay,
+    actualHour,
+    calendarLoader,
+    setCalendarLoader,
+    validateSchedule,
+    onTime,
+  } = React.useContext(ColsanitasVideoCallContext);
+  const [lastUpdateTime] = React.useState(new Date());
+
+  React.useEffect(() => {
+    const intervalId = setInterval(() => {
+      // Verifica si hay un cambio en la fecha u hora desde la última actualización
+      const hasDateTimeChanged =
+        lastUpdateTime.getDay() !== actualDay ||
+        lastUpdateTime.getHours() !== actualHour;
+
+      if (hasDateTimeChanged) {
+        // Realiza la recarga automática si hay un cambio
+        window.location.reload();
+      }
+    }, 100); // intervalo de 0.1 segundos para la recarga
+
+    // Limpiar el intervalo al desmontar el componente
+    return () => clearInterval(intervalId);
+  }, [actualDay, actualHour, lastUpdateTime]);
+
+  React.useEffect(() => {
+    console.log(onTime);
+    setCalendarLoader(true);
+    validateSchedule();
+  }, [onTime]);
+
   return (
     <div className="container">
       <figure className="logo-cont">
@@ -67,58 +58,14 @@ const AppUI = ({
         alt="Personas interactuando con el computador"
         className="main-image"
       />
-      {actualDay === 0 /*No olvidar descomentar esta línea en paso a prod*/ ||
-      (actualDay === 6 && actualHour < 8) ||
-      (actualDay === 6 && actualHour >= 14) ||
-      (actualDay !== 6 && actualHour < 8) ||
-      (actualDay !== 6 && actualHour >= 18) ||
-      //ANTES DE PASAR A PRODUCCIÓN VOLVER A 18
-      isHoliday === true ? (
+      {onTime !== 1 ? (
         <div className="ot-cont">
-          <OutOfTime />
+          {calendarLoader ? <CalendarLoader /> : <OutOfTime />}
           <Footer />
         </div>
       ) : (
         <div className="form-container">
-          <Formulario
-            opcionesDocs={opcionesDocs}
-            opcionesServ={opcionesServ}
-            checked={checked}
-            setChecked={setChecked}
-            disabled={disabled}
-            setDisabled={setDisabled}
-            checkDisabled={checkDisabled}
-            setCheckDisabled={setCheckDisabled}
-            showUnauthModal={showUnauthModal}
-            setShowUnauthModal={setShowUnauthModal}
-            showContactModal={showContactModal}
-            setShowContactModal={setShowContactModal}
-            showValidateOtpModal={showValidateOtpModal}
-            setShowValidateOtpModal={setShowValidateOtpModal}
-            handleClass={handleClass}
-            setHandleClass={setHandleClass}
-            formData={formData}
-            setFormData={setFormData}
-            selectedEmail={selectedEmail}
-            setSelectedEmail={setSelectedEmail}
-            selectedCellphone={selectedCellphone}
-            setSelectedCellphone={setSelectedCellphone}
-            otpCode={otpCode}
-            setOtpCode={setOtpCode}
-            hideData={hideData}
-            subContactType={subContactType}
-            setSubContactType={setSubContactType}
-            showPermissionModal={showPermissionModal}
-            setShowPermissionModal={setShowPermissionModal}
-            resendDisabled={resendDisabled}
-            setResendDisabled={setResendDisabled}
-            goBackButton={goBackButton}
-            setGoBackButton={setGoBackButton}
-            client={client}
-            otpError={otpError}
-            setOtpError={setOtpError}
-            date={date}
-          />
+          {calendarLoader ? <CalendarLoader /> : <Formulario />}
           <Footer />
         </div>
       )}

@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
+import { ColsanitasVideoCallContext } from "../context";
 import { Input } from "../Atoms/Input";
 import { AttentionSchedule } from "../Molecules/AttentionSchedule";
 import WSErrorModal from "../Molecules/WSErrorModal";
@@ -13,69 +14,58 @@ import PermissionModal from "./PermissionModal";
 import ReCAPTCHA from "react-google-recaptcha";
 import "../styles/Formulario.css";
 
-const Form = ({
-  opcionesDocs,
-  opcionesServ,
-  checked,
-  setChecked,
-  disabled,
-  setDisabled,
-  checkDisabled,
-  setCheckDisabled,
-  showUnauthModal,
-  setShowUnauthModal,
-  showContactModal,
-  setShowContactModal,
-  showValidateOtpModal,
-  setShowValidateOtpModal,
-  handleClass,
-  setHandleClass,
-  formData,
-  setFormData,
-  selectedEmail,
-  setSelectedEmail,
-  selectedCellphone,
-  setSelectedCellphone,
-  otpCode,
-  setOtpCode,
-  hideData,
-  subContactType,
-  setSubContactType,
-  showPermissionModal,
-  setShowPermissionModal,
-  resendDisabled,
-  setResendDisabled,
-  goBackButton,
-  setGoBackButton,
-  client,
-  otpError,
-  setOtpError,
-  // date,
-}) => {
+const Form = () => {
+  const {
+    formData,
+    checked,
+    setChecked,
+    handleClass,
+    setHandleClass,
+    opcionesDocs,
+    opcionesServ,
+    showContactModal,
+    showUnauthModal,
+    showValidateOtpModal,
+    showWSEModal,
+    setShowWSEModal,
+    setServUserEmail,
+    setServUserCellphone,
+    showDiffDataModal,
+    setShowDiffDataModal,
+    docTypeError,
+    setDocTypeError,
+    docNumError,
+    setDocNumError,
+    fullNameError,
+    setFullNameError,
+    emailError,
+    setEmailError,
+    phoneError,
+    setPhoneError,
+    serviceTypeError,
+    setServiceTypeError,
+    checkError,
+    setCheckError,
+    recaptchaError,
+    setRecaptchaError,
+    setFormData,
+    callApi,
+    loader,
+    setLoader,
+    setShowContactModal,
+    setShowUnauthModal,
+    showPermissionModal,
+    modalTextType,
+    setModalTextType,
+    executeService,
+    validateSchedule,
+  } = React.useContext(ColsanitasVideoCallContext);
+
   const { docType, docNum, fullName, userEmail, cellphoneNum, serviceType } =
     formData;
 
   const captcha = useRef(null);
-  const [showWSEModal, setShowWSEModal] = useState(false);
-  const [servUserEmail, setServUserEmail] = useState("");
-  const [servUserCellphone, setServUserCellphone] = useState("");
-  const [videoCallLink, setVideoCallLink] = useState("");
-  const [showDiffDataModal, setShowDiffDataModal] = useState(false);
-  const [url] = useState(
-    "https://sndl.cariai.com/pre-colsanitas-videollamada/process"
-  );
-  const [docTypeError, setDocTypeError] = useState(false);
-  const [docNumError, setDocNumError] = useState(false);
-  const [fullNameError, setFullNameError] = useState(false);
-  const [emailError, setEmailError] = useState(false);
-  const [phoneError, setPhoneError] = useState(false);
-  const [serviceTypeError, setServiceTypeError] = useState(false);
-  const [checkError, setCheckError] = useState(false);
-  const [recaptchaError, setRecaptchaError] = useState(false);
-  const [loader, setLoader] = useState(false);
-  const [modalLoader, setModalLoader] = useState(false);
-  const [modalType, setModalType] = useState("");
-  const [modalTextType, setModalTextType] = useState(0);
+
   //nunca borrar este manejador tan mk
   const handleCheck = () => {
     setChecked(!checked);
@@ -248,44 +238,6 @@ const Form = ({
     handleErrorCheck(e.target.checked);
   };
 
-  const callApi = async (
-    operation,
-    typeId,
-    numId,
-    userName,
-    email,
-    cellphone,
-    service,
-    subContactType,
-    otpForwarding
-  ) => {
-    let data = new FormData();
-    data.append("operation", operation);
-    data.append("token", "Contraseña123@");
-    data.append("useProduction", "false");
-    data.append("typeDocument", typeId);
-    data.append("numberDocument", numId);
-    data.append("fullUserName", userName);
-    data.append("emailUser", email);
-    data.append("phoneUser", cellphone);
-    data.append("serviceType", service);
-
-    if (operation === "userConsultOTP") {
-      data.append("otpMetod", subContactType);
-      data.append("otpForwarding", otpForwarding);
-    }
-
-    let headers = new Headers();
-    headers.append("Content-Type", "multipart/form-data");
-
-    try {
-      const response = await client.postData(url, data, headers);
-      return response;
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   const validateData = async (e) => {
     e.preventDefault();
 
@@ -297,6 +249,7 @@ const Form = ({
     let cellphone = formData.cellphoneNum;
     let service = formData.serviceType;
     let terms = formData.accepted;
+    // const hiddenData = hideData(email, cellphone);
     //manejo de errores
     let errortipoDoc = handleErrorIDType(typeId);
     let errorNumeroDoc = handleErrorIDNum(numId);
@@ -324,52 +277,62 @@ const Form = ({
     }
 
     setLoader(true);
-    const apiCall = await callApi(
+    const apiCall = await executeService(
+      [
+        "operation",
+        "typeDocument",
+        "numberDocument",
+        "fullNameUser",
+        "emailUser",
+        "phoneUser",
+        "serviceType",
+      ],
       operation,
       typeId,
       numId,
       userName,
-      email,
+      userEmail,
       cellphone,
       service
     );
 
     if (apiCall.status === 200) {
       setLoader(false);
-      if (apiCall.message[0].estado === "HABILITADO") {
+      if (apiCall.message[0].estado === true) {
         setServUserEmail(apiCall.message[0].emailUsuario);
         setServUserCellphone(apiCall.message[0].telefonoUsuario);
         if (
-          apiCall.message[0].emailUsuario === email &&
-          apiCall.message[0].telefonoUsuario
+          (apiCall.message[0].fitData === 1) |
+          (apiCall.message[0].fitData === true)
         ) {
           setLoader(false);
           setShowContactModal(true);
         }
 
         if (
-          apiCall.message[0].emailUsuario !== email ||
-          apiCall.message[0].telefonoUsuario !== cellphone
+          (apiCall.message[0].fitData === 0) |
+          (apiCall.message[0].fitData === false) |
+          (apiCall.message[0].fitData === "")
         ) {
           setLoader(false);
           setShowDiffDataModal(true);
           setShowContactModal(false);
         }
       } else if (
-        apiCall.message[0].estado === "NO HABILITADO" &&
-        apiCall.message[0].motivo === "sin contrato"
+        apiCall.message[0].estado === false &&
+        apiCall.message[0].motivo === 1
       ) {
         setLoader(false);
         setShowUnauthModal(true);
         setModalTextType(0);
       } else if (
-        apiCall.message[0].estado === "NO HABILITADO" &&
+        apiCall.message[0].estado === false &&
         apiCall.message[0].motivo === "otro plan"
       ) {
         setLoader(false);
         setShowUnauthModal(true);
         setModalTextType(0);
-      } else if (apiCall.message[0].motivo === "sin vigencia") {
+      } else if (apiCall.message[0].motivo === 2) {
         setLoader(false);
         setShowUnauthModal(true);
         setModalTextType(1);
@@ -380,8 +343,6 @@ const Form = ({
     }
   };
 
-  const hiddenData = hideData(servUserEmail, servUserCellphone);
-
   /** Manejo de datos del componente para el renderizado */
   useEffect(() => {
     if (checked) {
@@ -389,21 +350,7 @@ const Form = ({
     } else {
       setHandleClass("unChecked");
     }
-  }, [
-    formData,
-    checked,
-    selectedCellphone,
-    selectedEmail,
-    otpCode,
-    setCheckDisabled,
-    setDisabled,
-    setHandleClass,
-    servUserCellphone,
-    servUserEmail,
-    setShowContactModal,
-    videoCallLink,
-    captcha,
-  ]);
+  }, [formData, checked]);
 
   return (
     <div className="right-side">
@@ -423,7 +370,10 @@ const Form = ({
             options={opcionesDocs}
             value={docType}
             name={"docType"}
-            onChange={handleChange}
+            onChange={(e) => {
+              handleChange(e);
+              validateSchedule();
+            }}
             id={"docType"}
             docTypeError={docTypeError}
           />
@@ -437,7 +387,10 @@ const Form = ({
             placeHolder="Ej: 1223456789"
             value={docNum}
             name={"docNum"}
-            onChange={handleChange}
+            onChange={(e) => {
+              handleChange(e);
+              validateSchedule();
+            }}
             numberDocError={docNumError}
           />
         </div>
@@ -452,7 +405,10 @@ const Form = ({
             placeHolder="Ej: Juan Paz"
             value={fullName}
             name={"fullName"}
-            onChange={handleChange}
+            onChange={(e) => {
+              handleChange(e);
+              validateSchedule();
+            }}
             fullNameError={fullNameError}
           />
           <Input
@@ -463,7 +419,10 @@ const Form = ({
             placeHolder="Ej: juan@gmail.com"
             value={userEmail}
             name={"userEmail"}
-            onChange={handleChange}
+            onChange={(e) => {
+              handleChange(e);
+              validateSchedule();
+            }}
             emailError={emailError}
           />
         </div>
@@ -478,7 +437,10 @@ const Form = ({
             placeHolder="Ej: 310222311"
             value={cellphoneNum}
             name={"cellphoneNum"}
-            onChange={handleChange}
+            onChange={(e) => {
+              handleChange(e);
+              validateSchedule();
+            }}
             phoneError={phoneError}
           />
           <Input
@@ -492,7 +454,10 @@ const Form = ({
             options={opcionesServ}
             value={serviceType}
             name={"serviceType"}
-            onChange={handleChange}
+            onChange={(e) => {
+              handleChange(e);
+              validateSchedule();
+            }}
             serviceTypeError={serviceTypeError}
           />
         </div>
@@ -564,99 +529,23 @@ const Form = ({
           <Button
             variant={"iconButton"}
             value={"Ingresar"}
-            onClick={validateData}
+            onClick={(e) => {
+              validateSchedule();
+              validateData(e);
+            }}
             type={"button"}
             loader={loader}
           />
         </div>
       </form>
       {/* {showModal ? <PermissionModal setShowModal={setShowModal} /> : null} */}
-      {showContactModal ? (
-        <SelectContactType
-          email={hiddenData.hiddenEmail}
-          cellphone={hiddenData.hiddenCellphone}
-          valueEmail={formData.userEmail}
-          valueCellphone={formData.cellphoneNum}
-          setSelectedEmail={setSelectedEmail}
-          setSelectedCellphone={setSelectedCellphone}
-          setShowValidateOtpModal={setShowValidateOtpModal}
-          setOtpCode={setOtpCode}
-          setShowContactModal={setShowContactModal}
-          subContactType={subContactType}
-          setSubContactType={setSubContactType}
-          client={client}
-          url={url}
-          otpCode={otpCode}
-          setVideoCallLink={setVideoCallLink}
-          formData={formData}
-          callApi={callApi}
-          setDisabled={setDisabled}
-          showWSEModal={showWSEModal}
-          setShowWSEModal={setShowWSEModal}
-          modalLoader={modalLoader}
-          setModalLoader={setModalLoader}
-          setModalType={setModalType}
-        />
-      ) : null}
+      {showContactModal ? <SelectContactType /> : null}
       {showUnauthModal ? (
-        <WrongUserModal
-          setShowModal={setShowUnauthModal}
-          modalTextType={modalTextType}
-        />
+        <WrongUserModal modalTextType={modalTextType} />
       ) : null}
-      {showValidateOtpModal ? (
-        <ValidateOtpModal
-          setShowValidateOtpModal={setShowValidateOtpModal}
-          setShowContactModal={setShowContactModal}
-          receivedOtp={otpCode}
-          handleClass={handleClass}
-          setHandleClass={setHandleClass}
-          disabled={disabled}
-          setDisabled={setDisabled}
-          email={hiddenData.hiddenEmail}
-          cellphone={hiddenData.hiddenCellphone}
-          contactType={
-            selectedCellphone !== ""
-              ? hiddenData.hiddenCellphone
-              : hiddenData.hiddenEmail
-          }
-          setOtpCode={setOtpCode}
-          subContactType={subContactType}
-          setShowPermissionModal={setShowPermissionModal}
-          resendDisabled={resendDisabled}
-          setResendDisabled={setResendDisabled}
-          goBackButton={goBackButton}
-          setGoBackButton={setGoBackButton}
-          setVideoCallLink={setVideoCallLink}
-          otpError={otpError}
-          setOtpError={setOtpError}
-          callApi={callApi}
-          formData={formData}
-          showWSEModal={showWSEModal}
-          setShowWSEModal={setShowWSEModal}
-        />
-      ) : null}
-      {showPermissionModal ? (
-        <PermissionModal
-          setShowPermissionModal={setShowPermissionModal}
-          setShowContactModal={setShowContactModal}
-          videoCallLink={videoCallLink}
-          modalType={modalType}
-        />
-      ) : null}
-      {showDiffDataModal ? (
-        <DiffDataModal
-          setShowDiffDataModal={setShowDiffDataModal}
-          setVideoCallLink={setVideoCallLink}
-          videoCallLink={videoCallLink}
-          client={client}
-          url={url}
-          formData={formData}
-          setShowPermissionModal={setShowPermissionModal}
-          setModalType={setModalType}
-          setShowWSEModal={setShowWSEModal}
-        />
-      ) : null}
+      {showValidateOtpModal ? <ValidateOtpModal callApi={callApi} /> : null}
+      {showPermissionModal ? <PermissionModal /> : null}
+      {showDiffDataModal ? <DiffDataModal /> : null}
       {showWSEModal ? <WSErrorModal setShowModal={setShowWSEModal} /> : null}
     </div>
   );

@@ -14,7 +14,7 @@ class Client {
       const response = await axios.post(url, data, headers);
       return response.data;
     } catch (error) {
-      console.error(error);
+      console.error(error.message);
     }
   }
 }

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { ColsanitasVideoCallContext } from "../context";
 
 import { BaseModal } from "../pages/BaseModal";
 import { WarningIcon } from "../Atoms/WarningIcon";
@@ -11,30 +12,33 @@ import { CloseIcon } from "../Atoms/CloseIcon";
 
 import "../styles/ValidateOtpModal.css";
 
-const ValidateOtpModal = ({
-  setShowValidateOtpModal,
-  setShowContactModal,
-  receivedOtp,
-  handleClass,
-  setHandleClass,
-  disabled,
-  setDisabled,
-  email,
-  cellphone,
-  contactType,
-  setOtpCode,
-  subContactType,
-  setShowPermissionModal,
-  resendDisabled,
-  setResendDisabled,
-  goBackButton,
-  setGoBackButton,
-  otpError,
-  setOtpError,
-  callApi,
-  formData,
-  setShowWSEModal,
-}) => {
+const ValidateOtpModal = () => {
+  const {
+    otpError,
+    setOtpError,
+    url,
+    // key,
+    otpCode,
+    setShowPermissionModal,
+    setHandleClass,
+    setShowValidateOtpModal,
+    resendDisabled,
+    setResendDisabled,
+    goBackButton,
+    setGoBackButton,
+    disabled,
+    setDisabled,
+    formData,
+    subContactType,
+    setOtpCode,
+    setShowContactModal,
+    setShowWSEModal,
+    servUserEmail,
+    servUserCellphone,
+    executeService,
+    validateSchedule,
+  } = React.useContext(ColsanitasVideoCallContext);
+
   /** Se crea el estado para los segundos y se inicializa en 60 segundos. */
   const [seconds, setSeconds] = useState(60);
   let text = "";
@@ -58,13 +62,39 @@ const ValidateOtpModal = ({
     setOtp(value);
   };
 
-  const validateOtp = () => {
-    if (parseInt(otp) === receivedOtp) {
+  const valOtpApi = async (operation, otp, userOtp) => {
+    let data = new FormData();
+    data.append("operation", operation);
+    data.append("message", otp);
+    data.append("codeOtp", userOtp);
+
+    const requestOptions = {
+      method: "POST",
+      body: data,
+      redirect: "follow",
+    };
+
+    const res = fetch(url, requestOptions);
+    return res;
+  };
+
+  const validateOtp = async () => {
+    setOtpError(false);
+
+    let operation = "validatedatacod";
+
+    const res = await valOtpApi(operation, otpCode, otp);
+    if (res.status === 200) {
       handleClickClose();
       setShowPermissionModal(true);
-    } else {
+    } else if (res.status === 400) {
       setOtpError(true);
       setHandleClass("error");
+      setOtp("");
+    } else {
+      console.log(res.status);
+      setShowWSEModal(true);
+      setShowValidateOtpModal(false);
       setOtp("");
     }
   };
@@ -95,7 +125,29 @@ const ValidateOtpModal = ({
     let contactMethod = subContactType;
     let otpForwarding = 1;
 
-    const apiCall = await callApi(
+    // const apiCall = await callApi(
+    //   operation,
+    //   typeId,
+    //   numId,
+    //   userName,
+    //   email,
+    //   cellphone,
+    //   service,
+    //   contactMethod,
+    //   otpForwarding
+    // );
+    const apiCall = await executeService(
+      [
+        "operation",
+        "typeDocument",
+        "numberDocument",
+        "fullUserName",
+        "emailUser",
+        "phoneUser",
+        "serviceType",
+        "otpMetod",
+        "otpForwarding",
+      ],
       operation,
       typeId,
       numId,
@@ -106,26 +158,26 @@ const ValidateOtpModal = ({
       contactMethod,
       otpForwarding
     );
-
-    if (apiCall.status === 200) {
-      setOtpCode(apiCall.message[0].codigoOtp);
+    if (apiCall.message[0].estado === "EXITOSO") {
+      setOtpCode(apiCall.message[0].message);
       setShowValidateOtpModal(true);
       setShowContactModal(false);
     } else {
       console.log("Error al obtener el código de seguridad", apiCall);
       setShowWSEModal(true);
       setShowValidateOtpModal(false);
+      setOtpError(false);
     }
 
     setSeconds(60);
   };
 
-  if (contactType === email) {
+  if (subContactType === "email") {
     text = "Correo: ";
-    text2 = email;
-  } else if (contactType === cellphone) {
+    text2 = servUserEmail;
+  } else if (subContactType === "telefono") {
     text = "Celular";
-    text2 = cellphone;
+    text2 = servUserCellphone;
   }
 
   useEffect(() => {
@@ -143,20 +195,17 @@ const ValidateOtpModal = ({
       setResendDisabled(true);
       setGoBackButton(true);
     }
-  }, [
-    otp.length,
-    otp,
-    setHandleClass,
-    setDisabled,
-    seconds,
-    setResendDisabled,
-    setGoBackButton,
-  ]);
+  }, [otp.length, otp, seconds]);
 
   return (
     <BaseModal>
       <div className="modal-close-icon">
-        <span onClick={handleClickClose}>
+        <span
+          onClick={() => {
+            validateSchedule();
+            handleClickClose();
+          }}
+        >
           <CloseIcon />
         </span>
       </div>
@@ -194,7 +243,10 @@ const ValidateOtpModal = ({
             variant={"resendOtp"}
             disabled={resendDisabled}
             value={"Volver a enviar el código"}
-            onClick={handleClickResend}
+            onClick={() => {
+              validateSchedule();
+              handleClickResend();
+            }}
             setResendDisabled={setResendDisabled}
           />
           <Timer seconds={seconds} />
@@ -204,7 +256,10 @@ const ValidateOtpModal = ({
             variant={"modalGoBackBtn"}
             value={"Regresar"}
             className={"modal-btn-back"}
-            onClick={handleClickBack}
+            onClick={() => {
+              validateSchedule();
+              handleClickBack();
+            }}
             disabled={goBackButton}
             setGoBackButton={setGoBackButton}
           />
@@ -213,7 +268,10 @@ const ValidateOtpModal = ({
             value={"Ingresar"}
             disabled={disabled}
             className={"modal-btn-send"}
-            onClick={validateOtp}
+            onClick={() => {
+              validateSchedule();
+              validateOtp();
+            }}
           />
         </div>
       </form>

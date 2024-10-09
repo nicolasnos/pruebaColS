@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { ColsanitasVideoCallContext } from "../context";
 import { BaseModal } from "../pages/BaseModal";
 import { Image } from "../Atoms/Image";
 import Header from "./Header";
@@ -8,7 +9,9 @@ import { CloseIcon } from "../Atoms/CloseIcon";
 import infoIcon from "../assets/images/info-circle.svg";
 import "../styles/WrongUserModal.css";
 
-const WrongUserModal = ({ setShowModal, modalTextType }) => {
+const WrongUserModal = ({ modalTextType }) => {
+  const { setShowUnauthModal } = React.useContext(ColsanitasVideoCallContext);
+
   const [text, setText] = React.useState("");
   const [text2, setText2] = React.useState("");
   const [textSpan, setTextSpan] = React.useState("");
@@ -34,7 +37,7 @@ const WrongUserModal = ({ setShowModal, modalTextType }) => {
     <BaseModal>
       <div className="modalHeader">
         <figure className="close-permission">
-          <span onClick={() => setShowModal(false)}>
+          <span onClick={() => setShowUnauthModal(false)}>
             <CloseIcon />
           </span>
         </figure>
@@ -59,7 +62,7 @@ const WrongUserModal = ({ setShowModal, modalTextType }) => {
         variant={"primary"}
         className={"acceptButton"}
         value={"Aceptar"}
-        onClick={() => setShowModal(false)}
+        onClick={() => setShowUnauthModal(false)}
       />
     </BaseModal>
   );

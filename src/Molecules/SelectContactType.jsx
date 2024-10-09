@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { ColsanitasVideoCallContext } from "../context";
 import { BaseModal } from "../pages/BaseModal";
 import { CloseIcon } from "../Atoms/CloseIcon";
 import { WarningIcon } from "../Atoms/WarningIcon";
@@ -8,28 +9,27 @@ import Header from "./Header";
 import "../styles/BaseModal.css";
 import "../styles/SelectContactType.css";
 
-const SelectContactType = ({
-  email,
-  cellphone,
-  valueEmail,
-  valueCellphone,
-  setSelectedEmail,
-  setSelectedCellphone,
-  setShowValidateOtpModal,
-  setOtpCode,
-  setShowContactModal,
-  subContactType,
-  setSubContactType,
-  client,
-  url,
-  setVideoCallLink,
-  formData,
-  callApi,
-  setShowWSEModal,
-  modalLoader,
-  setModalLoader,
-  setModalType,
-}) => {
+const SelectContactType = () => {
+  const {
+    formData,
+    setShowContactModal,
+    setShowValidateOtpModal,
+    setOtpCode,
+    setVideoCallLink,
+    setSelectedCellphone,
+    setSelectedEmail,
+    subContactType,
+    setSubContactType,
+    setShowWSEModal,
+    servUserEmail,
+    servUserCellphone,
+    modalLoader,
+    setModalLoader,
+    executeService,
+    setModalType,
+    validateSchedule,
+  } = React.useContext(ColsanitasVideoCallContext);
+
   const [checkedEmail, setCheckedEmail] = useState(false);
   const [checkedCellphone, setCheckedCellphone] = useState(false);
   const [selectError, setSelectError] = useState(false);
@@ -53,15 +53,11 @@ const SelectContactType = ({
   };
 
   const handleSubmit = async (e) => {
-    console.log(e);
+    // console.log(e);
     e.preventDefault();
     let operation = "userConsultOTP";
     let typeId = formData.docType;
     let numId = formData.docNum;
-    let userName = formData.fullName;
-    let email = formData.userEmail;
-    let cellphone = formData.cellphoneNum;
-    let service = formData.serviceType;
     let contactMethod = subContactType;
     let otpForwarding = 0;
     setModalLoader(true);
@@ -70,19 +66,24 @@ const SelectContactType = ({
       setModalLoader(false);
       return;
     }
-    const apiCall = await callApi(
+
+    const apiCall = await executeService(
+      [
+        "operation",
+        "typeDocument",
+        "numberDocument",
+        "otpMetod",
+        "otpForwarding",
+      ],
       operation,
       typeId,
       numId,
-      userName,
-      email,
-      cellphone,
-      service,
       contactMethod,
       otpForwarding
     );
-    if (apiCall.status === 200) {
-      setOtpCode(apiCall.message[0].codigoOtp);
+
+    if (apiCall.message[0].estado === "EXITOSO") {
+      setOtpCode(apiCall.message[0].message);
       setVideoCallLink(apiCall.message[0].url);
       setModalLoader(false);
       setShowValidateOtpModal(true);
@@ -120,15 +121,18 @@ const SelectContactType = ({
         confirmación
       </p>
       <form
-        onSubmit={handleSubmit}
+        onSubmit={(e) => {
+          validateSchedule();
+          handleSubmit(e);
+        }}
         className="colsanitas-contact-type-form"
         name="contact-type"
       >
         <div className="radius-cont">
           <Input
             type="colsanitasRadioBtn"
-            label={email}
-            value={valueEmail}
+            label={servUserEmail}
+            value={servUserEmail}
             name={"sndEmail"}
             checked={checkedEmail}
             onChange={handleSelect}
@@ -137,8 +141,8 @@ const SelectContactType = ({
         <div className="radius-cont">
           <Input
             type="colsanitasRadioBtn"
-            label={cellphone}
-            value={valueCellphone}
+            label={servUserCellphone}
+            value={servUserCellphone}
             name={"sndCellphone"}
             checked={checkedCellphone}
             onChange={handleSelect}
