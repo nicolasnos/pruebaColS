@@ -5,7 +5,8 @@ import { ColsanitasVideoCallContext } from "../context";
 import Formulario from "../pages/Formulario";
 import { OutOfTime } from "../pages/OutOfTime";
 import { CalendarLoader } from "../Atoms/CalendarLoader";
-import Footer from "../Molecules/Footer";
+// import Footer from "../Molecules/Footer";
+import { FooterV2 } from "../Molecules/FooterV2";
 import logo from "../assets/images/logo.png";
 
 /** Importación imagenes */
@@ -43,7 +44,7 @@ const AppUI = () => {
   }, [actualDay, actualHour, lastUpdateTime]);
 
   React.useEffect(() => {
-    console.log(onTime);
+    // console.log(onTime);
     setCalendarLoader(true);
     validateSchedule();
   }, [onTime]);
@@ -61,12 +62,12 @@ const AppUI = () => {
       {onTime !== 1 ? (
         <div className="ot-cont">
           {calendarLoader ? <CalendarLoader /> : <OutOfTime />}
-          <Footer />
+          <FooterV2 />
         </div>
       ) : (
         <div className="form-container">
           {calendarLoader ? <CalendarLoader /> : <Formulario />}
-          <Footer />
+          <FooterV2 />
         </div>
       )}
     </div>
